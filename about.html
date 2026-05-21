@@ -30,34 +30,14 @@
             font-family: 'Inter', sans-serif;
             color: var(--ink);
             -webkit-font-smoothing: antialiased;
-            cursor: none;
             overflow: hidden;
             height: 100vh;
         }
-
-        /* ── Cursor ── */
-        #cur {
-            width: 8px; height: 8px; background: var(--ink);
-            border-radius: 50%; position: fixed; top:0; left:0;
-            pointer-events: none; z-index: 9999;
-            transform: translate(-50%,-50%);
-            transition: width .15s, height .15s, background .15s;
+        html, body, * {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23facc15'/%3E%3C/svg%3E") 12 12, auto !important;
         }
-        #cur-ring {
-            width: 30px; height: 30px;
-            border: 1px solid rgba(26,26,26,.2); border-radius: 50%;
-            position: fixed; top:0; left:0;
-            pointer-events: none; z-index: 9998;
-            transform: translate(-50%,-50%);
-            transition: width .35s cubic-bezier(.23,1,.32,1), height .35s cubic-bezier(.23,1,.32,1);
-        }
-        body.dragging #cur { width: 14px; height: 14px; background: var(--ink); border-radius: 3px; transform: translate(-50%,-50%) rotate(45deg); }
-        body.dragging #cur-ring { width: 0; height: 0; }
-        body.hovcard #cur { width: 5px; height: 5px; }
-        body.hovcard #cur-ring { width: 48px; height: 48px; border-color: rgba(156,163,175,.4); }
 
 
-        
         /* ── Nav ── */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 6000;
@@ -285,14 +265,12 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(229,231,235,0.8);
             padding: 8px 18px; border-radius: 999px;
-            cursor: none; transition: all .2s;
+            cursor: default; transition: all .2s;
         }
         .reset-btn:hover { color: var(--ink); border-color: var(--ink); }
     </style>
 </head>
 <body>
-    <div id="cur"></div>
-    <div id="cur-ring"></div>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -355,7 +333,7 @@
                     transform: `rotate(${dragging ? rot * 0.3 : rot}deg)`,
                     width, zIndex: z,
                     borderRadius: 4,
-                    cursor: dragging ? 'grabbing' : 'grab',
+                    cursor: 'default',
                     transition: dragging ? 'box-shadow .2s' : 'box-shadow .2s, transform .3s cubic-bezier(.23,1,.32,1)',
                 }}
             >
@@ -403,7 +381,7 @@
                     left: pos.x, top: pos.y,
                     width: 360, zIndex: z,
                     borderRadius: 6,
-                    cursor: dragging ? 'grabbing' : 'grab',
+                    cursor: 'default',
                     transition: dragging ? 'box-shadow .2s' : 'box-shadow .2s',
                 }}
             >
@@ -434,7 +412,7 @@
                     transform: `rotate(${dragging ? rot * 0.3 : rot}deg)`,
                     width: 130, zIndex: z,
                     borderRadius: 6,
-                    cursor: dragging ? 'grabbing' : 'grab',
+                    cursor: 'default',
                     transition: dragging ? 'box-shadow .2s' : 'box-shadow .2s, transform .3s cubic-bezier(.23,1,.32,1)',
                 }}
             >
@@ -475,56 +453,56 @@
                     transform: `rotate(${dragging ? rot * 0.3 : rot}deg)`,
                     width, zIndex: z,
                     borderRadius: 4,
-                    cursor: dragging ? 'grabbing' : 'grab',
-                    transition: dragging ? 'box-shadow .2s' : 'box-shadow .2s, transform .3s cubic-bezier(.23,1,.32,1)',
-                }}
-            >
-                <div className="tape"></div>
-                <div style={{ width: '100%', height: videoH, background: '#0a0a0a', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <video
-                        ref={videoRef}
-                        src={src}
-                        loop
-                        playsInline
-                        onEnded={() => setPlaying(false)}
-                        style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', pointerEvents: 'none' }}
-                    />
-                    <button
-                        onClick={togglePlay}
-                        style={{
-                            position: 'absolute',
-                            inset: 0,
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: 'transparent',
-                            border: 'none',
-                            cursor: 'pointer',
-                            opacity: playing ? 0 : 1,
-                            transition: 'opacity .2s',
-                        }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = 1}
-                        onMouseLeave={e => e.currentTarget.style.opacity = playing ? 0 : 1}
-                    >
-                        <div style={{
-                            width: 44, height: 44,
-                            borderRadius: '50%',
-                            background: 'rgba(255,255,255,0.15)',
-                            backdropFilter: 'blur(8px)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            border: '1px solid rgba(255,255,255,0.3)',
-                        }}>
-                            {playing
-                                ? <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                                : <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
-                            }
-                        </div>
-                    </button>
+                        cursor: 'default',
+                        transition: dragging ? 'box-shadow .2s' : 'box-shadow .2s, transform .3s cubic-bezier(.23,1,.32,1)',
+                    }}
+                >
+                    <div className="tape"></div>
+                    <div style={{ width: '100%', height: videoH, background: '#0a0a0a', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <video
+                            ref={videoRef}
+                            src={src}
+                            loop
+                            playsInline
+                            onEnded={() => setPlaying(false)}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', pointerEvents: 'none' }}
+                        />
+                        <button
+                            onClick={togglePlay}
+                            style={{
+                                position: 'absolute',
+                                inset: 0,
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'default',
+                                opacity: playing ? 0 : 1,
+                                transition: 'opacity .2s',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.opacity = 1}
+                            onMouseLeave={e => e.currentTarget.style.opacity = playing ? 0 : 1}
+                        >
+                            <div style={{
+                                width: 44, height: 44,
+                                borderRadius: '50%',
+                                background: 'rgba(255,255,255,0.15)',
+                                backdropFilter: 'blur(8px)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                            }}>
+                                {playing
+                                    ? <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                    : <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+                                }
+                            </div>
+                        </button>
+                    </div>
+                    <div className="pol-caption">{caption}</div>
                 </div>
-                <div className="pol-caption">{caption}</div>
-            </div>
         );
     }
 
@@ -540,7 +518,7 @@
                     left: pos.x, top: pos.y,
                     transform: `rotate(${dragging ? rot * 0.3 : rot}deg)`,
                     zIndex: dragging ? 999 : 8,
-                    cursor: dragging ? 'grabbing' : 'grab',
+                    cursor: 'default',
                     transition: dragging ? 'none' : 'transform .3s',
                     boxShadow: dragging ? '0 8px 24px rgba(26,24,20,.15)' : 'none',
                 }}>
@@ -550,24 +528,6 @@
     }
 
     function App() {
-        /* Cursor */
-        useEffect(() => {
-            const dot  = document.getElementById('cur');
-            const ring = document.getElementById('cur-ring');
-            let raf, rx = 0, ry = 0, tx = 0, ty = 0;
-            const mv = e => { tx = e.clientX; ty = e.clientY; };
-            const lerp = (a, b, t) => a + (b - a) * t;
-            const loop = () => {
-                rx = lerp(rx, tx, 0.2); ry = lerp(ry, ty, 0.2);
-                ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-                dot.style.left  = tx + 'px'; dot.style.top  = ty + 'px';
-                raf = requestAnimationFrame(loop);
-            };
-            raf = requestAnimationFrame(loop);
-            window.addEventListener('mousemove', mv);
-            return () => { cancelAnimationFrame(raf); window.removeEventListener('mousemove', mv); };
-        }, []);
-
         const resetView = () => {
             const canvas = document.getElementById('canvas');
             if (canvas) { canvas.scrollLeft = 0; canvas.scrollTop = 0; }

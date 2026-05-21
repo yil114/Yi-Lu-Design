@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Yi</title>
+    <style>
+        :root {
+            --panel-bg: #808080; /* Matches the grey from your screenshot */
+            --text-color: #ffffff;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: var(--font-family);
+            background-color: #ffffff;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left Side: 3x2 Photo Grid */
+        .photo-grid {
+            flex: 2; /* Takes up roughly 66% of the screen */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 4px; /* Slight separation between photos */
+            padding: 4px;
+            background-color: #ffffff;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 4px; /* A subtle, bubbly minimalist touch */
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* Right Side: Information Panel */
+        .info-panel {
+            flex: 1; /* Takes up the remaining 33% */
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #panelContent {
+            /* Smooth fade animation for when text changes */
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .info-panel h1 {
+            font-weight: 400;
+            margin-bottom: 16px;
+            font-size: 2.2rem;
+            letter-spacing: -0.02em; /* Gives it an editorial, polished feel */
+        }
+
+        .info-panel p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Animation classes toggled by JavaScript */
+        .fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="photo-grid">
+            <img src="https://via.placeholder.com/600x400?text=Photo+1" 
+                 data-title="Finding Inspiration" 
+                 data-desc="Exploring Baotu Spring. I often draw on physical spaces and natural transitions to inform my approach to spatial memory in design.">
+            
+            <img src="https://via.placeholder.com/600x400?text=Photo+2" 
+                 data-title="Zero UI" 
+                 data-desc="Observing how people naturally interact with their environment helps me strip away the screen and focus on gestures and context.">
+            
+            <img src="https://via.placeholder.com/600x400?text=Photo+3" 
+                 data-title="Building Experiences" 
+                 data-desc="Whether it's sketching out the logic for a foggy mirror interaction or prototyping with computer vision, I love making things functional.">
+            
+            <img src="https://via.placeholder.com/600x400?text=Photo+4" 
+                 data-title="Accessibility First" 
+                 data-desc="Design is about solving technical challenges to ensure everyone can navigate digital and physical spaces easily.">
+            
+            <img src="https://via.placeholder.com/600x400?text=Photo+5" 
+                 data-title="Collaboration" 
+                 data-desc="Sharing moments and creative outputs. I recently made a custom graphic of a memory just like this to share.">
+            
+            <img src="https://via.placeholder.com/600x400?text=Photo+6" 
+                 data-title="The Next Step" 
+                 data-desc="Always looking for new ways to integrate AI into the design process to create smarter, more personalized user experiences.">
+        </div>
+
+        <div class="info-panel">
+            <div id="panelContent" class="fade-in">
+                <h1>Hi My name is Yi</h1>
+                <p>Click on any of the images to the left to learn more about my design philosophy, what I'm building, and the things that inspire me.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Select all images and the text container
+        const images = document.querySelectorAll('.photo-grid img');
+        const panelContent = document.getElementById('panelContent');
+
+        images.forEach(img => {
+            img.addEventListener('click', () => {
+                // Grab the text specific to the clicked image
+                const newTitle = img.getAttribute('data-title');
+                const newDesc = img.getAttribute('data-desc');
+
+                // Fade out current text
+                panelContent.classList.remove('fade-in');
+                panelContent.classList.add('fade-out');
+
+                // Wait a brief moment for the fade out to happen, then swap text and fade in
+                setTimeout(() => {
+                    panelContent.innerHTML = `
+                        <h1>${newTitle}</h1>
+                        <p>${newDesc}</p>
+                    `;
+                    panelContent.classList.remove('fade-out');
+                    panelContent.classList.add('fade-in');
+                }, 200); // 200ms matches the CSS transition speed
+            });
+        });
+    </script>
+</body>
+</html>

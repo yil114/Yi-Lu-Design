@@ -69,8 +69,10 @@
 
             const bodies = Array.from({ length: 12 }).map((_, i) => {
                 const radius = 80 + Math.random() * 30;
-                return Bodies.circle(Math.random() * width, -Math.random() * 1500, radius, {
-                    restitution: 0.5, friction: 0.1,
+                // Stagger spawn heights so they drop in sequence, not all at once
+                const spawnY = -radius - (i * 180) - Math.random() * 200;
+                return Bodies.circle(radius + Math.random() * (width - radius * 2), spawnY, radius, {
+                    restitution: 0.45, friction: 0.15, frictionAir: 0.01,
                     render: { fillStyle: palette[i % palette.length], trait: traits[i % traits.length] }
                 });
             });
@@ -198,15 +200,40 @@
             Render.run(render);
             Runner.run(Runner.create(), engine);
 
+            // Fade in text after balls have settled
+            let textShown = false;
+            const settleCheck = setInterval(() => {
+                if (textShown) return;
+                const allLow = bodies.every(b => Math.abs(b.velocity.y) < 1.5 && b.position.y > height * 0.3);
+                if (allLow) {
+                    textShown = true;
+                    clearInterval(settleCheck);
+                    const el = document.getElementById("hero-text");
+                    if (el) el.style.opacity = "1";
+                }
+            }, 200);
+            // Fallback: show text after 4s no matter what
+            setTimeout(() => {
+                if (!textShown) {
+                    textShown = true;
+                    const el = document.getElementById("hero-text");
+                    if (el) el.style.opacity = "1";
+                }
+            }, 4000);
+
             return () => { window.removeEventListener('mousemove', onMouseMove); Render.stop(render); Engine.clear(engine); render.canvas.remove(); };
         }, []);
 
         return (
             <section id="physics-hero" ref={sceneRef}>
-                <div className="absolute top-[25%] left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 w-full text-center">
-                                <h1 className="text-[12vw] font-medium tracking-tight leading-none" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                Hey! I'm Yi.
-            </h1>
+                <div
+                    id="hero-text"
+                    className="absolute top-[25%] left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 w-full text-center"
+                    style={{ opacity: 0, transition: "opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1)" }}
+                >
+                    <h1 className="text-[12vw] font-medium tracking-tight leading-none" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                        Hey! I'm Yi.
+                    </h1>
                 </div>
             </section>
         );
