@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-        html, body, * {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23facc15'/%3E%3C/svg%3E") 12 12, auto !important;
-        }
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yi Lu | Portfolio</title>
@@ -14,210 +9,607 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link rel="dns-prefetch" href="https://unpkg.com"/>
 
-    <!-- Preload all project images immediately before any JS runs -->
     <link rel="preload" as="image" href="Ricoh-Preview.png" fetchpriority="high"/>
     <link rel="preload" as="image" href="Volvo-Preview.png" fetchpriority="high"/>
     <link rel="preload" as="image" href="Library-Preview.png" fetchpriority="high"/>
 
-    <!-- Fonts preloaded inline instead of @import (faster) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono&display=swap"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap"/>
 
     <!-- Production React — 3x smaller than dev builds -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
-        /* Font now loaded via <link> above, not @import */
-        
-        :root {
-            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-            --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+        html, body, * {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='40' viewBox='0 0 16 20'%3E%3Cpath d='M1 1 L1 16 L5 12 L8 19 L10 18 L7 11 L12 11 Z' fill='%23f472b6' stroke='white' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto !important;
         }
 
-        body { 
-            background-color: #fafafa; 
-            font-family: var(--font-sans);
-            color: #1a1a1a;
-            margin: 0;
-            padding: 0;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sidebar-w: 220px;
+            --bg: #ffffff;
+            --card-bg: #ebebeb;
+            --text: #1a1a1a;
+            --muted: #aaaaaa;
+            --gap: 10px;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: "Inter", ui-sans-serif, sans-serif;
+            color: var(--text);
             overflow-x: hidden;
         }
 
-        /* Image loading */
-        .case-study-card {
-            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+        /* ── Shell ── */
+        .shell {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+
+        /* ── Main ── */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-right: 24px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            width: 100%;
+            height: 58vh;
+            min-height: 340px;
+            background: #c8cfe8;
+            position: relative;
             overflow: hidden;
-            transform: translateZ(0); /* force GPU layer — prevents clipping during scroll */
+            display: flex;
+            align-items: flex-end;
+            padding: 40px 48px;
+            border-radius: 8px;
+            margin-right: var(--gap);
         }
-        @keyframes shimmer {
-            0%   { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        .case-study-card img {
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-            opacity: 0;
-            will-change: transform;
-            display: block;
+
+        .hero img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top; /* anchors to top so scroll-in looks clean */
+            object-position: center;
         }
-        .case-study-card img.loaded {
-            opacity: 1;
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
         }
-        .case-study-card:has(img.loaded) {
+
+        .hero-text h1 {
+            font-size: clamp(20px, 2.8vw, 32px);
+            font-weight: 400;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 300;
+        }
+
+        /* ── Page intro ── */
+        .page-intro {
+            padding: 80px 80px 72px 0;
+        }
+
+        .page-intro h1 {
+            font-size: clamp(10px, 3.8vw, 32px);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            color: var(--text);
+            max-width: 100%;
+        }
+
+        /* ── Spacer between hero and grid ── */
+        .spacer { height: 80px; }
+
+        /* ── Grid ── */
+        .grid-wrap {
+            padding: 0 var(--gap) var(--gap) 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap);
+        }
+
+        .span-full { grid-column: 1 / 3; }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card.short { min-height: 260px; }
+
+        .card img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1);
+            display: block;
+        }
+
+        .card img.loaded { opacity: 1; }
+        .card:hover img { transform: scale(1.025); }
+
+        /* shimmer */
+        .card {
+            background: linear-gradient(90deg, #e6e6e6 25%, #eeeeee 50%, #e6e6e6 75%);
+            background-size: 200% 100%;
+            animation: sh 1.8s infinite;
+        }
+        .card:has(img.loaded) { animation: none; background: var(--card-bg); }
+        @keyframes sh {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* card label */
+        .card-label {
+            position: absolute;
+            top: 16px; left: 18px;
+            font-size: 11px;
+            color: var(--text);
+            z-index: 3;
+            letter-spacing: 0.01em;
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 16px; right: 18px;
+            font-size: 9px;
+            font-family: "JetBrains Mono", monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #999;
+            z-index: 3;
+        }
+
+        /* text card */
+        .card-text-inner {
+            position: relative;
+            z-index: 2;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
             animation: none;
-            background: none;
+            background: var(--card-bg);
         }
-        .case-study-card:hover img {
-            transform: scale(1.04);
+
+        .card-text-inner h2 {
+            font-size: clamp(18px, 2vw, 26px);
+            font-weight: 300;
+            line-height: 1.3;
+            color: #bebebe;
+            letter-spacing: -0.02em;
+        }
+
+        .card-text-inner h2 em {
+            font-style: italic;
+            color: var(--text);
+        }
+
+        .card-text-inner p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 260px;
+            font-weight: 300;
+        }
+
+        /* soon */
+        .soon { opacity: 0.4; cursor: not-allowed; }
+
+        a.card-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        a.card-link:hover .card-label { opacity: 0.5; }
+
+        /* ── Section label ── */
+        .section-label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            padding: 0 var(--gap) 10px 0;
+        }
+
+        /* ── Section heading (AI Design) ── */
+        /* ── Card caption (below card) ── */
+        .card-caption {
+            padding: 10px 2px 0;
+        }
+
+        .card-caption-title {
+            font-size: 12px;
+            color: var(--text);
+            font-weight: 300;
+            margin-bottom: 6px;
+        }
+
+        .card-caption-tools {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-caption-tools span {
+            font-size: 9px;
+            font-family: "JetBrains Mono", monospace;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* ── Section heading (AI Design) ── */
+        .section-heading {
+            padding: 0 var(--gap) 24px 0;
+            text-align: center;
+        }
+
+        .section-heading h1, .section-heading h2 {
+            font-size: clamp(10px, 3.8vw, 32px);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        /* ── Physics hero ── */
+        #physics-hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #fff;
+            touch-action: pan-y;
+            overflow: hidden;
+        }
+
+        /* ── Physics hero ── */
+        #physics-hero {
+            position: relative;
+            width: 100%;
+            height: 90vh;
+            min-height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 680px) {
+            .main { margin-left: 0; }
+            .grid { grid-template-columns: 1fr; }
+            .span-full { grid-column: 1; }
+            .hero { height: 40vh; padding: 24px; }
         }
     </style>
-    <link rel="preload" as="image" href="Ricoh-Preview.png"/>
-    <link rel="preload" as="image" href="Volvo-Preview.png"/>
-    <link rel="preload" as="image" href="Library-Preview.png"/>
 </head>
 <body>
     <div id="root"></div>
 
+    <script src="nav.js"></script>
+    <script>initNav();</script>
     <script type="text/babel">
-    const { useState } = React;
+    const { useEffect, useRef } = React;
 
-    function NavBar() {
-        return (
-            <nav className="w-full flex items-center justify-between px-6 py-8 md:px-12 bg-[#fafafa]/90 backdrop-blur-md sticky top-0 z-50">
-                <div className="flex flex-col">
-                    <span className="text-[15px] font-bold tracking-[0.05em] text-[#1a1a1a] uppercase">Yi Lu</span>
-                    <span className="text-[11px] font-light tracking-[0.1em] text-[#9ca3af] uppercase mt-1">Designer & Researcher</span>
-                </div>
+    function PuppetPhysicsHero() {
+        const sceneRef = useRef(null);
+        const mousePos = useRef({ x: 0, y: 0 });
 
-                <div className="hidden md:flex items-center space-x-12 absolute left-1/2 transform -translate-x-1/2">
-                    {['Work', 'AI Design', 'About'].map((item) => (
-                        <a
-                            key={item}
-                            href={item === 'About' ? 'about.html' : item === 'AI Design' ? 'aidesign.html' : `#${item.toLowerCase()}`}
-                            className="text-[13px] font-light tracking-[0.08em] text-[#9ca3af] hover:text-[#1a1a1a] transition-colors duration-300 uppercase"
-                        >
-                            {item}
-                        </a>
-                    ))}
-                </div>
+        useEffect(() => {
+            const { Engine, Render, Runner, Bodies, Composite, MouseConstraint, Mouse, Events } = Matter;
+            const engine = Engine.create();
+            const world = engine.world;
+            const width = sceneRef.current.clientWidth;
+            const height = sceneRef.current.clientHeight;
 
-                <div className="flex items-center space-x-6">
-                    <a href="https://www.linkedin.com/in/yi-lu-b014b31a7/" target="_blank" rel="noopener noreferrer" className="text-[#9ca3af] hover:text-[#1a1a1a] transition-colors duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    </a>
-                </div>
-            </nav>
-        );
+            const render = Render.create({
+                element: sceneRef.current,
+                engine: engine,
+                options: { width, height, wireframes: false, background: 'transparent', pixelRatio: window.devicePixelRatio }
+            });
+
+            const ground    = Bodies.rectangle(width/2, height + 50, width, 100, { isStatic: true });
+            const leftWall  = Bodies.rectangle(-50, height/2, 100, height, { isStatic: true });
+            const rightWall = Bodies.rectangle(width + 50, height/2, 100, height, { isStatic: true });
+
+            const palette = ['#FF5F1F', '#5D3FD3', '#1A1A1A', '#FFBF00', '#F08080', '#90EE90'];
+            const traits  = ['glasses', 'hair', 'squint', 'closed-smile', 'standard', 'sad', 'surprised', 'beret', 'blush', 'freckles'];
+
+            const bodies = Array.from({ length: 12 }).map((_, i) => {
+                const radius = 80 + Math.random() * 30;
+                const spawnY = -radius - (i * 180) - Math.random() * 200;
+                return Bodies.circle(radius + Math.random() * (width - radius * 2), spawnY, radius, {
+                    restitution: 0.45, friction: 0.15, frictionAir: 0.01,
+                    render: { fillStyle: palette[i % palette.length], trait: traits[i % traits.length] }
+                });
+            });
+
+            Composite.add(world, [ground, leftWall, rightWall, ...bodies]);
+
+            const onMouseMove = (e) => {
+                const rect = sceneRef.current.getBoundingClientRect();
+                mousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            };
+            window.addEventListener('mousemove', onMouseMove);
+
+            Events.on(render, 'afterRender', () => {
+                const ctx = render.context;
+                bodies.forEach(body => {
+                    const { x, y } = body.position;
+                    const r = body.circleRadius;
+                    const trait = body.render.trait;
+                    const isDark = body.render.fillStyle === '#1A1A1A' || body.render.fillStyle === '#5D3FD3';
+
+                    const dx = mousePos.current.x - x;
+                    const dy = mousePos.current.y - y;
+                    const angle = Math.atan2(dy, dx);
+                    const faceIntensity = Math.min(r * 0.3, Math.sqrt(dx*dx + dy*dy) / 12);
+                    const faceX = Math.cos(angle) * faceIntensity;
+                    const faceY = Math.sin(angle) * faceIntensity;
+                    const pupilX = Math.cos(angle) * (r * 0.08);
+                    const pupilY = Math.sin(angle) * (r * 0.08);
+
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(body.angle);
+
+                    if (trait === 'beret') {
+                        ctx.save();
+                        ctx.translate(r * 0.2, -r * 0.7);
+                        ctx.rotate(0.4);
+                        ctx.fillStyle = '#FFBF00';
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, r * 0.6, r * 0.35, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillRect(-2, -r * 0.35, 4, r * 0.1);
+                        ctx.restore();
+                    }
+
+                    ctx.save();
+                    ctx.translate(faceX, faceY);
+                    ctx.fillStyle = isDark ? 'white' : 'black';
+                    ctx.strokeStyle = ctx.fillStyle;
+                    ctx.lineWidth = r * 0.06;
+                    ctx.lineCap = 'round';
+
+                    const eyeY = -r * 0.1;
+                    const eyeSpace = r * 0.28;
+                    const eyeR = r * 0.22;
+                    const pupilR = r * 0.05;
+
+                    const drawEyeSet = (isGlassStyle) => {
+                        const drawSingleEye = (ox) => {
+                            ctx.fillStyle = "white";
+                            ctx.beginPath(); ctx.arc(ox, eyeY, isGlassStyle ? eyeR : r*0.12, 0, Math.PI*2); ctx.fill();
+                            if (isGlassStyle) { ctx.strokeStyle = isDark ? 'white' : 'black'; ctx.stroke(); }
+                            ctx.fillStyle = "black";
+                            ctx.beginPath(); ctx.arc(ox + pupilX, eyeY + pupilY, pupilR, 0, Math.PI*2); ctx.fill();
+                        };
+                        drawSingleEye(-eyeSpace); drawSingleEye(eyeSpace);
+                        if (isGlassStyle) {
+                            ctx.beginPath(); ctx.moveTo(-eyeSpace + eyeR, eyeY); ctx.lineTo(eyeSpace - eyeR, eyeY); ctx.stroke();
+                        }
+                    };
+
+                    if (['glasses', 'beret', 'blush', 'freckles'].includes(trait)) {
+                        drawEyeSet(true);
+                    } else if (trait === 'squint') {
+                        const s = r * 0.08;
+                        [-eyeSpace, eyeSpace].forEach(ox => {
+                            ctx.beginPath(); ctx.moveTo(ox-s, eyeY-s); ctx.lineTo(ox+s, eyeY+s); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ox+s, eyeY-s); ctx.lineTo(ox-s, eyeY+s); ctx.stroke();
+                        });
+                    } else { drawEyeSet(false); }
+
+                    if (trait === 'blush') {
+                        ctx.fillStyle = '#FF69B4'; ctx.globalAlpha = 0.6;
+                        ctx.beginPath(); ctx.arc(-r*0.5, r*0.1, r*0.12, 0, Math.PI*2); ctx.fill();
+                        ctx.beginPath(); ctx.arc(r*0.5, r*0.1, r*0.12, 0, Math.PI*2); ctx.fill();
+                        ctx.globalAlpha = 1.0;
+                    }
+                    if (trait === 'freckles') {
+                        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        for (let i = 0; i < 5; i++) {
+                            ctx.beginPath(); ctx.arc(r*0.45 + (i*3), r*0.1 + (i%2*4), 1.5, 0, Math.PI*2); ctx.fill();
+                        }
+                    }
+
+                    const mouthY = r * 0.2;
+                    ctx.fillStyle = isDark ? 'white' : 'black';
+                    if (trait === 'blush') {
+                        ctx.beginPath(); ctx.arc(0, mouthY, r*0.15, 0, Math.PI); ctx.fill();
+                    } else {
+                        ctx.beginPath(); ctx.arc(0, mouthY, r * 0.15, 0, Math.PI, false); ctx.stroke();
+                    }
+
+                    ctx.restore();
+                    ctx.restore();
+                });
+            });
+
+            const mouse = Mouse.create(render.canvas);
+            mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+            Composite.add(world, MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } }));
+            Render.run(render);
+            Runner.run(Runner.create(), engine);
+
+            let textShown = false;
+            const settleCheck = setInterval(() => {
+                if (textShown) return;
+                const allLow = bodies.every(b => Math.abs(b.velocity.y) < 1.5 && b.position.y > height * 0.3);
+                if (allLow) {
+                    textShown = true; clearInterval(settleCheck);
+                    const el = document.getElementById("hero-text");
+                    if (el) el.style.opacity = "1";
+                }
+            }, 200);
+            setTimeout(() => {
+                if (!textShown) {
+                    textShown = true;
+                    const el = document.getElementById("hero-text");
+                    if (el) el.style.opacity = "1";
+                }
+            }, 4000);
+
+            return () => { window.removeEventListener('mousemove', onMouseMove); Render.stop(render); Engine.clear(engine); render.canvas.remove(); };
+        }, []);
+
+        return <div ref={sceneRef} style={{position:'absolute', top:0, right:0, width:'38%', height:'100%', overflow:'hidden'}} />;
     }
 
-    function InteractiveExperiment() {
+    function Img({ src, alt }) {
         return (
-            <section className="w-full h-[85vh] bg-white border-b border-gray-100 overflow-hidden">
-                <iframe 
-                    src="bubble-interaction.html" 
-                    className="w-full h-full border-none"
-                    title="Bubble Physics Interaction"
-                    scrolling="no"
-                />
-            </section>
-        );
-    }
-
-    function CaseStudySection() {
-        return (
-            <div className="px-6 py-16 md:px-12 md:py-24" id="work">
-                <div className="max-w-[1600px] mx-auto mb-12 flex justify-between items-end">
-                    <h2 className="text-3xl md:text-4xl tracking-tight font-light">Selected Works</h2>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 pb-1">2024 — 2026</span>
-                </div>
-
-                <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
-                    
-                    {/* Project 1: Ricoh USA - Full Bleed */}
-                    <a href="ricoh_casestudy.html" className="group block no-underline">
-                        <div className="case-study-card w-full aspect-[4/3] rounded-sm relative">
-                            <img 
-                                src="Ricoh-Preview.png" 
-                                alt="Ricoh USA SaaS Redesign"
-                                className="w-full h-full"
-                                loading="eager"
-                                decoding="async"
-                                onLoad={e => e.target.classList.add('loaded')}
-                            />
-                        </div>
-                        <div className="mt-6 flex justify-between items-start px-2">
-                            <div>
-                                <h3 className="text-lg font-medium text-[#1a1a1a]">Ricoh USA</h3>
-                                <p className="text-[13px] text-gray-500 mt-1 font-light italic">UX Design & Research Intern</p>
-                            </div>
-                            <span className="text-[10px] border border-gray-200 px-3 py-1 rounded-full uppercase tracking-wider text-gray-500 font-mono">B2B SaaS</span>
-                        </div>
-                    </a>
-
-                    {/* Project 2: Volvo Group - Full Bleed */}
-                    <a href="volvo-smartwatch-case-study.html" className="group block no-underline">
-                        <div className="case-study-card w-full aspect-[4/3] rounded-sm relative">
-                            <img 
-                                src="Volvo-Preview.png" 
-                                alt="Volvo Smartwatch Concept"
-                                className="w-full h-full"
-                                loading="eager"
-                                decoding="async"
-                                onLoad={e => e.target.classList.add('loaded')}
-                            />
-                        </div>
-                        <div className="mt-6 flex justify-between items-start px-2">
-                            <div>
-                                <h3 className="text-lg font-medium text-[#1a1a1a]">Volvo Group</h3>
-                                <p className="text-[13px] text-gray-500 mt-1 font-light italic">UX Design Intern</p>
-                            </div>
-                            <span className="text-[10px] border border-gray-200 px-3 py-1 rounded-full uppercase tracking-wider text-gray-500 font-mono">Wearable</span>
-                        </div>
-                    </a>
-
-                     {/* Project 3: Library - Full Bleed */}
-                    <div className="group block cursor-not-allowed opacity-60">
-                        <div className="case-study-card w-full aspect-[4/3] rounded-sm relative">
-                            <img 
-                                src="Library-Preview.png" 
-                                alt="Library Full Bleed Concept"
-                                className="w-full h-full"
-                                loading="eager"
-                                decoding="async"
-                                onLoad={e => e.target.classList.add('loaded')}
-                            />
-                        </div>
-                        <div className="mt-6 flex justify-between items-start px-2">
-                            <div>
-                                <h3 className="text-lg font-medium text-[#1a1a1a]">UC San Diego Library</h3>
-                                <p className="text-[13px] text-gray-500 mt-1 font-light italic">Coming up soon</p>
-                            </div>
-                            <span className="text-[10px] border border-gray-200 px-3 py-1 rounded-full uppercase tracking-wider text-gray-500 font-mono">Accessibility</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <img
+                src={src}
+                alt={alt}
+                loading="eager"
+                decoding="async"
+                onLoad={e => e.target.classList.add('loaded')}
+            />
         );
     }
 
     function App() {
         return (
-            <div className="min-h-screen flex flex-col">
-                <NavBar />
-                <main className="flex-grow">
-                    <InteractiveExperiment />
-                    <CaseStudySection />
+            <div className="shell">
+
+                {/* ── Main ── */}
+                <main className="main">
+
+                    {/* Intro */}
+                    <div className="page-intro" style={{display:'flex', alignItems:'center', gap:'40px'}}>
+                        <div style={{width:'128px', height:'128px', borderRadius:'50%', overflow:'hidden', flexShrink:'0'}}>
+                            <img src="Images/yiprofilepic.png" alt="Yi Lu" style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', transformOrigin:'center top'}} />
+                        </div>
+                        <div>
+                            <h1>Hi, I'm Yi. I design experiences that turn complex workflows into something that just feels natural.</h1>
+                            <p style={{marginTop: '20px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed @ JPMorgan Chase, Volvo Group, Ricoh USA, Dexcom</p>
+                            <p style={{marginTop: '8px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Studied Human-Computer Interaction @ Cornell University & UC San Diego</p>
+                        </div>
+                    </div>
+
+                    {/* Product Design Section */}
+                    <div className="grid-wrap">
+                        <div className="grid">
+
+                            {/* Volvo */}
+                            <a href="volvo-smartwatch-case-study.html" className="card-link">
+                                <div className="card">
+                                    <span className="card-label">Volvo Group →</span>
+                                    <span className="card-tag">Wearable AI</span>
+                                    <Img src="Volvo-Preview.png" alt="Volvo Smartwatch AI" />
+                                </div>
+                            </a>
+
+                            {/* Ricoh */}
+                            <a href="ricoh_casestudy.html" className="card-link">
+                                <div className="card">
+                                    <span className="card-label">Ricoh USA →</span>
+                                    <span className="card-tag">B2B SaaS</span>
+                                    <Img src="Ricoh-Preview.png" alt="Ricoh SaaS Redesign" />
+                                </div>
+                            </a>
+
+                            {/* UCSD Library — coming soon */}
+                            <div className="card soon">
+                                <span className="card-label">UC San Diego Library</span>
+                                <span className="card-tag">Accessibility · Soon</span>
+                                <Img src="Library-Preview.png" alt="UCSD Library" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* AI Design Section */}
+                    <div id="ai-design" className="grid-wrap" style={{paddingTop: '100px'}}>
+                        <div className="section-heading">
+                            <h1 style={{marginBottom:'10px'}}>AI Design</h1>
+                            <p style={{marginBottom:'40px'}}>Experiments at the intersection of artificial intelligence and design craft.</p>
+                        </div>
+                        <div className="grid">
+
+                          
+
+                            {/* Froggy Drawing */}
+                            <a href="https://yil114.github.io/fog-project" target="_blank" rel="noopener noreferrer" className="card-link">
+                                <div className="card">
+                                    <span className="card-tag">Interaction · Live 2026</span>
+                                    <Img src="https://images.squarespace-cdn.com/content/v1/68d5a437b484267b9999188c/7c517aee-177d-4956-8232-81a06acc56c3/product-fog-demo.gif" alt="Froggy Drawing" />
+                                </div>
+                                <div className="card-caption">
+                                    <div style={{fontSize:'20px', fontWeight:'500', color:'var(--text)', marginBottom:'4px'}}>Froggy Drawing →</div>
+                                    <div className="card-caption-title">Non-touch Interaction Design</div>
+                                    <div className="card-caption-tools" style={{fontSize:'50px'}}>
+                                        {['Gemini','React','AI Agent'].map(t => <span key={t}>{t}</span>)}
+                                    </div>
+                                </div>
+                            </a>
+
+                            {/* Goldfish Pond */}
+                            <a href="https://yil114.github.io/pond-goldfish-interaction/" target="_blank" rel="noopener noreferrer" className="card-link">
+                                <div className="card">
+                                    <span className="card-tag">Zero UI · Live 2026</span>
+                                    <Img src="Images/GoldFish_Preview.png" alt="Goldfish Pond" />
+                                </div>
+                                <div className="card-caption">
+                                    <div style={{fontSize:'20px', fontWeight:'500', color:'var(--text)', marginBottom:'4px'}}>金鱼池塘 →</div>
+                                    <div className="card-caption-title">Multimodal AI Experience</div>
+                                    <div className="card-caption-tools">
+                                        {['Claude Design','ChatGPT'].map(t => <span key={t}>{t}</span>)}
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div style={{height: '120px'}} />
                 </main>
-                <footer className="px-6 py-12 md:px-12 text-center text-[10px] uppercase tracking-[0.3em] text-gray-300 font-mono">
-                    &copy; 2026 Yi Lu
-                </footer>
             </div>
         );
     }

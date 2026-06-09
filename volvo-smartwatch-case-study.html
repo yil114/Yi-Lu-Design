@@ -3,28 +3,111 @@
 <head>
     <style>
         html, body, * {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23facc15'/%3E%3C/svg%3E") 12 12, auto !important;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='40' viewBox='0 0 16 20'%3E%3Cpath d='M1 1 L1 16 L5 12 L8 19 L10 18 L7 11 L12 11 Z' fill='%23f472b6' stroke='white' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto !important;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yi Lu | Volvo Smartwatch Case Study</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap"/>
     <style>
-        *, ::before, ::after { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sidebar-w: 220px;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #aaaaaa;
+        }
 
         body {
-            background-color: rgb(255, 255, 255);
-            font-family: Inter, sans-serif;
-            color: rgb(26, 26, 26);
+            background: var(--bg);
+            font-family: "Inter", ui-sans-serif, sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             scroll-behavior: smooth;
+        }
+
+        .shell { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            flex-shrink: 0;
+            position: fixed;
+            top: 0; left: 0;
+            height: 100vh;
+            padding: 32px 28px 32px 24px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            z-index: 100;
+        }
+
+        .sidebar-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .nav-group { margin-bottom: 24px; }
+
+        .nav-group-label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 300;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-link {
+            display: block;
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text);
+            text-decoration: none;
+            line-height: 1.9;
+            transition: color 0.15s;
+        }
+
+        .nav-link:hover { color: var(--muted); }
+        .nav-link.dim { color: var(--muted); font-weight: 300; }
+        .nav-link.active { font-weight: 500; }
+
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 80px 48px 48px;
+        }
+
+        .site-footer {
+            margin-top: 48px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        @media (max-width: 680px) {
+            .sidebar { position: relative; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; gap: 16px; padding: 20px; }
+            .sidebar-name { margin-bottom: 0; }
+            .nav-group { margin-bottom: 0; display: flex; gap: 12px; align-items: center; }
+            .nav-group-label { display: none; }
+            .main { margin-left: 0; padding: 32px 24px 48px; }
         }
 
         .page-wrapper {
@@ -195,7 +278,6 @@
         }
 
         .rc-h2 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.65rem;
             font-weight: 700;
             color: #111827;
@@ -206,7 +288,6 @@
         }
 
         .rc-h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
             color: rgb(17, 24, 39);
