@@ -19,13 +19,8 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
-        html, body, * {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='40' viewBox='0 0 16 20'%3E%3Cpath d='M1 1 L1 16 L5 12 L8 19 L10 18 L7 11 L12 11 Z' fill='%23f472b6' stroke='white' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto !important;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
             --sidebar-w: 220px;
@@ -57,7 +52,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding-right: 24px;
+            padding: 0 56px 0 56px;
         }
 
         /* ── Hero ── */
@@ -106,16 +101,18 @@
 
         /* ── Page intro ── */
         .page-intro {
-            padding: 80px 80px 72px 0;
+            padding: 80px 0 72px 0;
+            display: flex;
+            align-items: center;
+            gap: 40px;
         }
 
         .page-intro h1 {
-            font-size: clamp(10px, 3.8vw, 32px);
+            font-size: clamp(20px, 3.8vw, 32px);
             font-weight: 200;
             letter-spacing: -0.03em;
             line-height: 1.2;
             color: var(--text);
-            max-width: 100%;
         }
 
         /* ── Spacer between hero and grid ── */
@@ -123,7 +120,7 @@
 
         /* ── Grid ── */
         .grid-wrap {
-            padding: 0 var(--gap) var(--gap) 0;
+            padding: 0 0 var(--gap) 0;
         }
 
         .grid {
@@ -160,20 +157,9 @@
         }
 
         .card img.loaded { opacity: 1; }
-        .card:hover img { transform: scale(1.025); }
+        .card:hover img { transform: scale(1.05); }
 
         /* shimmer */
-        .card {
-            background: linear-gradient(90deg, #e6e6e6 25%, #eeeeee 50%, #e6e6e6 75%);
-            background-size: 200% 100%;
-            animation: sh 1.8s infinite;
-        }
-        .card:has(img.loaded) { animation: none; background: var(--card-bg); }
-        @keyframes sh {
-            0%   { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
         /* card label */
         .card-label {
             position: absolute;
@@ -238,8 +224,6 @@
             text-decoration: none;
         }
 
-        a.card-link:hover .card-label { opacity: 0.5; }
-
         /* ── Section label ── */
         .section-label {
             font-size: 11px;
@@ -285,7 +269,7 @@
         }
 
         .section-heading h1, .section-heading h2 {
-            font-size: clamp(10px, 3.8vw, 32px);
+            font-size: clamp(20px, 3.8vw, 32px);
             font-weight: 200;
             letter-spacing: -0.03em;
             line-height: 1.2;
@@ -303,28 +287,30 @@
         #physics-hero {
             position: relative;
             width: 100%;
-            height: 100vh;
-            background: #fff;
-            touch-action: pan-y;
-            overflow: hidden;
-        }
-
-        /* ── Physics hero ── */
-        #physics-hero {
-            position: relative;
-            width: 100%;
             height: 90vh;
             min-height: 500px;
             overflow: hidden;
             border-radius: 8px;
         }
 
+        /* ── Monitor ── */
+        @media (min-width: 1600px) {
+            .card { min-height: 520px; }
+        }
+
+        /* ── Tablet ── */
+        @media (max-width: 1024px) {
+            .main { padding: 0 32px 0 32px; }
+            .card { min-height: 300px; }
+        }
+
         /* ── Mobile ── */
         @media (max-width: 680px) {
-            .main { margin-left: 0; }
+            .main { margin-left: 0; padding: 0 20px; }
             .grid { grid-template-columns: 1fr; }
             .span-full { grid-column: 1; }
-            .hero { height: 40vh; padding: 24px; }
+            .page-intro { padding: 40px 0 48px 0; flex-direction: column; align-items: flex-start; gap: 24px; }
+            .card { min-height: 220px; }
         }
     </style>
 </head>
@@ -522,7 +508,7 @@
                 <main className="main">
 
                     {/* Intro */}
-                    <div className="page-intro" style={{display:'flex', alignItems:'center', gap:'40px'}}>
+                    <div className="page-intro">
                         <div style={{width:'128px', height:'128px', borderRadius:'50%', overflow:'hidden', flexShrink:'0'}}>
                             <img src="Images/yiprofilepic.png" alt="Yi Lu" style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', transformOrigin:'center top'}} />
                         </div>
@@ -542,7 +528,7 @@
                                 <div className="card">
                                     <span className="card-label">Volvo Group →</span>
                                     <span className="card-tag">Wearable AI</span>
-                                    <Img src="Volvo-Preview.png" alt="Volvo Smartwatch AI" />
+                                    <Img src="Images/Volvo/Volvo-Preview.png" alt="Volvo Smartwatch AI" />
                                 </div>
                             </a>
 
