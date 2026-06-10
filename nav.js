@@ -59,7 +59,7 @@
         aside.innerHTML = `
             <div style="margin-bottom:40px">
                 <a href="index.html" class="sidebar-name">Yi Lu</a>
-                <div style="font-size:11px;color:var(--muted);font-weight:300;letter-spacing:0.02em">Product Designer</div>
+                <div style="font-size:11px;color:var(--muted);font-weight:300;letter-spacing:0.02em">Product Designer & Researcher</div>
             </div>
             <nav>
                 <div class="nav-group">
