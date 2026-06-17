@@ -31,7 +31,7 @@
         :root {
             --sidebar-w: 220px;
             --bg: #ffffff;
-            --card-bg: #ebebeb;
+            --card-bg: #ffffff;
             --text: #1a1a1a;
             --muted: #aaaaaa;
             --gap: 10px;
@@ -164,6 +164,9 @@
 
         .card img.loaded { opacity: 1; }
         .card:hover img { transform: scale(1.05); filter: blur(6px); }
+
+        .card video { transition: filter 0.35s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .card:hover video { transform: scale(1.35); }
 
         /* shimmer */
         /* card hover overlay */
@@ -588,7 +591,7 @@
                                 <div className="card">
                                     <div className="card-overlay"></div>
                                     <span className="card-label">Ricoh USA →</span>
-                                    <span className="card-hover-title">Ricoh USA</span>
+                                    <span className="card-hover-title">Ricoh Insurance Form</span>
                                     <span className="card-tag">B2B SaaS</span>
                                     <Img src="Ricoh-Preview.jpg" alt="Ricoh SaaS Redesign" />
                                 </div>
@@ -630,7 +633,7 @@
                             {/* Froggy Drawing */}
                             <a href="https://yil114.github.io/fog-project" target="_blank" rel="noopener noreferrer" className="card-link">
                                 <div className="card">
-                                    <span className="card-tag">Interaction · Live 2026</span>
+                                    <span className="card-tag">Click to interact</span>
                                     <Img src="Images/project-fog-demo.gif" alt="Froggy Drawing" />
                                 </div>
                                 <div className="card-caption">
@@ -642,11 +645,34 @@
                                 </div>
                             </a>
 
+                            {/* Googly Bubbles */}
+                            <a href="https://yil114.github.io/Googly-Bubbles/" target="_blank" rel="noopener noreferrer" className="card-link">
+                                <div className="card">
+                                    <div className="card-overlay"></div>
+                                    <span className="card-tag">Click to interact</span>
+                                    <video autoPlay loop muted playsInline style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block',clipPath:'inset(3px)',transform:'scale(1.3)',transformOrigin:'center'}}>
+                                        <source src="Images/googly-bubbles.webm" type="video/webm" />
+                                        <source src="Images/googly-bubbles.mp4" type="video/mp4" />
+                                    </video>
+                                </div>
+                                <div className="card-caption">
+                                    <div style={{fontSize:'20px', fontWeight:'500', color:'var(--text)', marginBottom:'4px'}}>Googly Bubbles →</div>
+                                    <div className="card-caption-title">Interactive Design</div>
+                                    <div className="card-caption-tools">
+                                        {['ChatGPT','Claude Design'].map(t => <span key={t}>{t}</span>)}
+                                    </div>
+                                </div>
+                            </a>
+
                             {/* Goldfish Pond */}
                             <a href="https://yil114.github.io/pond-goldfish-interaction/" target="_blank" rel="noopener noreferrer" className="card-link">
                                 <div className="card">
-                                    <span className="card-tag">Zero UI · Live 2026</span>
-                                    <Img src="Images/GoldFish_Preview.jpg" alt="Goldfish Pond" />
+                                    <span className="card-tag">Click to interact</span>
+                                    <div className="card-overlay"></div>
+                                    <video autoPlay loop muted playsInline style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block'}}>
+                                        <source src="Images/goldfish.webm" type="video/webm" />
+                                        <source src="Images/goldfish.mp4" type="video/mp4" />
+                                    </video>
                                 </div>
                                 <div className="card-caption">
                                     <div style={{fontSize:'20px', fontWeight:'500', color:'var(--text)', marginBottom:'4px'}}>金鱼池塘 →</div>
