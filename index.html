@@ -163,17 +163,56 @@
         }
 
         .card img.loaded { opacity: 1; }
-        .card:hover img { transform: scale(1.05); }
+        .card:hover img { transform: scale(1.05); filter: blur(6px); }
 
         /* shimmer */
-        /* card label */
+        /* card hover overlay */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.6);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            z-index: 2;
+            border-radius: 8px;
+        }
+
+        .card:hover .card-overlay { opacity: 1; }
+
+        /* card label — always visible top left */
         .card-label {
             position: absolute;
             top: 16px; left: 18px;
             font-size: 13px;
+            font-weight: 400;
             color: var(--text);
             z-index: 3;
             letter-spacing: 0.01em;
+            transition: opacity 0.35s ease;
+        }
+
+        .card:hover .card-label { opacity: 0; }
+
+        /* hover title — centered on hover */
+        .card-hover-title {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -44%);
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .card-hover-title img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .card:hover .card-hover-title {
+            opacity: 1;
+            transform: translate(-50%, -50%);
         }
 
         .card-tag {
@@ -526,7 +565,7 @@
                         </div>
                         <div>
                             <h1>Hi, I'm Yi. I research and design experiences that turn complex workflows into something that just feels natural.</h1>
-                            <p style={{marginTop: '20px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed @ Volvo Group, Ricoh USA, Dexcom</p>
+                            <p style={{marginTop: '20px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed & researched @ Volvo Group, Ricoh USA, Dexcom</p>
                             <p style={{marginTop: '8px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Studied Human-Computer Interaction @ Cornell University & UC San Diego</p>
                         </div>
                     </div>
@@ -538,7 +577,9 @@
                             {/* Volvo */}
                             <a href="volvo-smartwatch-case-study.html" className="card-link">
                                 <div className="card">
+                                    <div className="card-overlay"></div>
                                     <span className="card-label">Volvo Group →</span>
+                                    <div className="card-hover-title"><img src="Images/Volvo-Logo.png" alt="Volvo Group" /></div>
                                     <span className="card-tag">Wearable AI</span>
                                     <Img src="Images/Volvo/Volvo-Preview.jpg" alt="Volvo Smartwatch AI" />
                                 </div>
@@ -547,7 +588,9 @@
                             {/* Ricoh */}
                             <a href="ricoh_casestudy.html" className="card-link">
                                 <div className="card">
+                                    <div className="card-overlay"></div>
                                     <span className="card-label">Ricoh USA →</span>
+                                    <div className="card-hover-title"><img src="Images/Ricoh_logo.png" alt="Ricoh USA" /></div>
                                     <span className="card-tag">B2B SaaS</span>
                                     <Img src="Ricoh-Preview.jpg" alt="Ricoh SaaS Redesign" />
                                 </div>
@@ -555,7 +598,9 @@
 
                             {/* UCSD Library — coming soon */}
                             <div className="card soon">
-                                <span className="card-label">UC San Diego Library</span>
+                                <div className="card-overlay"></div>
+                                <span className="card-label">UC San Diego Library →</span>
+                                <div className="card-hover-title" style={{fontSize:'22px',fontWeight:'500',color:'#1a1a1a',whiteSpace:'nowrap'}}>UC San Diego Library</div>
                                 <span className="card-tag">Accessibility · Soon</span>
                                 <Img src="Images/UC San Diego Library Case Study.jpg" alt="UCSD Library" />
                             </div>
@@ -563,7 +608,9 @@
                             {/* Dexcom */}
                             <a href="dexcom_casestudy.html" className="card-link">
                                 <div className="card">
+                                    <div className="card-overlay"></div>
                                     <span className="card-label">Dexcom Research →</span>
+                                    <div className="card-hover-title"><img src="Images/dexcom_logo.png" alt="Dexcom" /></div>
                                     <span className="card-tag">UX Research</span>
                                     <Img src="Images/dexcom/Dexcom Case Study.jpg" alt="Dexcom UX Research" />
                                 </div>
