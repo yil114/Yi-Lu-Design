@@ -198,16 +198,14 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -44%);
+            font-size: 34px;
+            font-weight: 500;
+            color: #1a1a1a;
             z-index: 3;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
             opacity: 0;
             transition: opacity 0.35s ease, transform 0.35s ease;
-        }
-
-        .card-hover-title img {
-            height: 48px;
-            width: auto;
-            object-fit: contain;
-            display: block;
         }
 
         .card:hover .card-hover-title {
@@ -579,7 +577,7 @@
                                 <div className="card">
                                     <div className="card-overlay"></div>
                                     <span className="card-label">Volvo Group →</span>
-                                    <div className="card-hover-title"><img src="Images/Volvo-Logo.png" alt="Volvo Group" /></div>
+                                    <span className="card-hover-title">Volvo Group</span>
                                     <span className="card-tag">Wearable AI</span>
                                     <Img src="Images/Volvo/Volvo-Preview.jpg" alt="Volvo Smartwatch AI" />
                                 </div>
@@ -590,7 +588,7 @@
                                 <div className="card">
                                     <div className="card-overlay"></div>
                                     <span className="card-label">Ricoh USA →</span>
-                                    <div className="card-hover-title"><img src="Images/Ricoh_logo.png" alt="Ricoh USA" /></div>
+                                    <span className="card-hover-title">Ricoh USA</span>
                                     <span className="card-tag">B2B SaaS</span>
                                     <Img src="Ricoh-Preview.jpg" alt="Ricoh SaaS Redesign" />
                                 </div>
@@ -600,7 +598,7 @@
                             <div className="card soon">
                                 <div className="card-overlay"></div>
                                 <span className="card-label">UC San Diego Library →</span>
-                                <div className="card-hover-title" style={{fontSize:'22px',fontWeight:'500',color:'#1a1a1a',whiteSpace:'nowrap'}}>UC San Diego Library</div>
+                                <span className="card-hover-title">UC San Diego Library</span>
                                 <span className="card-tag">Accessibility · Soon</span>
                                 <Img src="Images/UC San Diego Library Case Study.jpg" alt="UCSD Library" />
                             </div>
@@ -610,7 +608,7 @@
                                 <div className="card">
                                     <div className="card-overlay"></div>
                                     <span className="card-label">Dexcom Research →</span>
-                                    <div className="card-hover-title"><img src="Images/dexcom_logo.png" alt="Dexcom" /></div>
+                                    <span className="card-hover-title">Dexcom Research</span>
                                     <span className="card-tag">UX Research</span>
                                     <Img src="Images/dexcom/Dexcom Case Study.jpg" alt="Dexcom UX Research" />
                                 </div>
