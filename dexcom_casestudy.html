@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yi Lu | Dexcom UX Research Case Study</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+            font-family: Inter, sans-serif;
+            color: rgb(26, 26, 26);
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        .page-wrapper {
+            opacity: 0;
+            animation: 0.7s ease 0.05s 1 normal forwards running pageFadeIn;
+        }
+
+        @keyframes pageFadeIn {
+            100% { opacity: 1; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.65s cubic-bezier(0.23, 1, 0.32, 1), transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: rgb(26, 26, 26);
+            z-index: 9997;
+            width: 0%;
+            transition: width 0.08s linear;
+        }
+
+        .nav-link {
+            display: block;
+            border-left: 1px solid transparent;
+            padding-left: 0;
+            transition: color 0.2s, border-color 0.2s, padding-left 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: rgb(26, 26, 26);
+            border-left-color: rgb(26, 26, 26);
+            padding-left: 12px;
+        }
+
+        .nav-link.active {
+            font-weight: 500;
+        }
+
+        .content-section {
+            margin-bottom: 100px;
+        }
+
+        .img-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .img-wrapper:hover img {
+            transform: scale(1.012);
+        }
+
+        .img-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+            color: rgb(255,255,255);
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            padding: 28px 16px 14px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .img-wrapper:hover .img-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hmw-box {
+            background: rgb(26, 26, 26);
+            color: rgb(255, 255, 255);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .persona-box {
+            border: 1px solid rgb(229, 231, 235);
+            border-radius: 16px;
+            padding: 32px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .persona-box:hover {
+            border-color: rgb(209, 213, 219);
+            box-shadow: rgba(0,0,0,0.05) 0px 4px 20px;
+        }
+
+        .takeaway-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 24px 0;
+            border-bottom: 1px solid rgb(240, 240, 240);
+            transition: padding-left 0.25s;
+        }
+
+        .takeaway-item:last-child {
+            border-bottom: none;
+        }
+
+        .takeaway-item:hover {
+            padding-left: 8px;
+        }
+
+        .iter-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgb(107, 114, 128);
+            border: 1px solid rgb(229, 231, 235);
+            border-radius: 6px;
+            padding: 4px 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgb(249, 250, 251);
+        }
+
+        .callout-box {
+            background: rgb(248, 249, 250);
+            border-left: 2px solid rgb(26, 26, 26);
+            padding: 24px 28px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: rgb(156, 163, 175);
+            text-decoration: none;
+            margin-bottom: 80px;
+            transition: color 0.2s, gap 0.25s;
+        }
+
+        .back-link svg {
+            transition: transform 0.25s;
+        }
+
+        .back-link:hover {
+            color: rgb(26, 26, 26);
+            gap: 8px;
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-4px);
+        }
+
+        .footer-next {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: rgb(156, 163, 175);
+            text-decoration: none;
+            transition: color 0.2s, letter-spacing 0.3s;
+        }
+
+        .footer-next:hover {
+            color: rgb(26, 26, 26);
+            letter-spacing: 0.42em;
+        }
+
+        .rc-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgb(107, 114, 128);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .rc-h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.25;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            max-width: 52rem;
+        }
+
+        .rc-h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: rgb(17, 24, 39);
+            line-height: 1.4;
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+
+        .rc-body {
+            font-size: 15px;
+            font-weight: 400;
+            color: #6b7280;
+            line-height: 1.75;
+            max-width: 42rem;
+            display: block;
+        }
+
+        .rc-body strong {
+            color: rgb(17, 24, 39);
+            font-weight: 600;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgb(107, 114, 128);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .persona-name-rc {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgb(17, 24, 39);
+            margin-bottom: 6px;
+        }
+
+        /* Image placeholder style */
+        .img-placeholder {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: rgb(243, 244, 246);
+            border: 1.5px dashed rgb(209, 213, 219);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .img-placeholder-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .img-placeholder-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgb(107, 114, 128);
+            font-family: Inter, sans-serif;
+        }
+
+        .img-placeholder-caption {
+            font-size: 11px;
+            color: rgb(156, 163, 175);
+            font-style: italic;
+            max-width: 340px;
+            line-height: 1.5;
+            font-family: Inter, sans-serif;
+        }
+
+        .nda-banner {
+            background: rgb(249, 250, 251);
+            border: 1px solid rgb(229, 231, 235);
+            border-radius: 12px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .nda-banner p {
+            font-size: 13px;
+            color: rgb(107, 114, 128);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .rc-h2 { font-size: 1.35rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scroll-progress"></div>
+
+    <div class="page-wrapper min-h-screen">
+        <div class="flex px-8 py-12 md:px-16 md:py-20 lg:px-24">
+
+            <!-- Sidebar Nav -->
+            <aside class="w-[200px] hidden md:block flex-shrink-0 sticky top-12 h-fit pr-10">
+                <nav>
+                    <a href="index.html" class="back-link">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to projects
+                    </a>
+                    <div class="mb-16">
+                        <span class="text-xs uppercase text-gray-400 tracking-[0.1em]">UX Research · 2024</span>
+                        <h1 class="text-base font-semibold text-gray-900 mt-1">Dexcom</h1>
+                    </div>
+                    <ul class="space-y-6">
+                        <li><a href="#overview" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400 active">Overview</a></li>
+                        <li><a href="#immersion" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400">Immersion</a></li>
+                        <li><a href="#research" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400">Research</a></li>
+                        <li><a href="#interviews" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400">Interviews</a></li>
+                        <li><a href="#synthesis" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400">Synthesis</a></li>
+                        <li><a href="#takeaways" class="nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400">Reflection</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-grow min-w-0">
+
+                <!-- Header -->
+                <header class="mb-16">
+                    <div class="reveal visible">
+                        <p class="rc-label mb-3">Dexcom · UX Research 2024</p>
+                        <h2 class="text-4xl md:text-5xl font-semibold text-gray-900 leading-tight mb-4">
+                            From Research to Insight: Designing with Empathy for People Living with Type 2 Diabetes
+                        </h2>
+                    </div>
+                </header>
+
+                <!-- Overview -->
+                <section id="overview" class="content-section">
+                    <div class="reveal visible">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-14 pb-14 border-b border-gray-100">
+                            <div>
+                                <p class="rc-label mb-2">Role</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">UX Researcher</p>
+                            </div>
+                            <div>
+                                <p class="rc-label mb-2">Timeline</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">2024</p>
+                            </div>
+                            <div>
+                                <p class="rc-label mb-2">Methods</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">Diary Study</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">Secondary Research</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">In-Depth Interviews</p>
+                            </div>
+                            <div>
+                                <p class="rc-label mb-2">Skills</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">Thematic Analysis</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">Affinity Diagramming</p>
+                                <p class="text-sm font-normal text-gray-500 leading-relaxed">Journey Mapping</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NDA Banner -->
+                    <div class="reveal visible">
+                        <div class="nda-banner">
+                            <span style="font-size: 18px;">🔒</span>
+                            <p>My work is under NDA. This case study only shows my main learnings 😊</p>
+                        </div>
+                    </div>
+
+                    <!-- What is Dexcom -->
+                    <div class="reveal">
+                        <span class="section-label">Context</span>
+                        <h2 class="rc-h2 mb-4">Dexcom? CGM?</h2>
+                        <p class="rc-body mb-4">
+                            Dexcom develops and produces <strong>continuous glucose monitoring (CGM) systems</strong> for diabetes management. The main advantage of Dexcom's CGM is that it eliminates the need for fingersticks and provides <strong>24/7 real-time blood sugar monitoring</strong> through their mobile app.
+                        </p>
+                        <p class="rc-body mb-10">
+                            Our central research question: <strong>How do people living with Type 2 diabetes experience and navigate the initiation and titration of basal insulin?</strong>
+                        </p>
+                    </div>
+
+                    <!-- Hero image -->
+                    <div class="reveal">
+                        <div class="img-wrapper" style="width:50%; margin:0 auto;">
+                            <img src="Images/dexcom/dexcom_cgm.png" alt="Overview of the Dexcom CGM ecosystem and research focus">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Diary Study / Immersion -->
+                <section id="immersion" class="content-section">
+                    <div class="reveal"><span class="section-label">Diary Study</span></div>
+                    <div class="reveal">
+                        <h2 class="rc-h2 mb-4">Living with Diabetes: A Week of Immersion</h2>
+                        <p class="rc-body mb-6">
+                            Before studying our participants, I studied myself. To understand life with diabetes from the inside out, I participated in a <strong>5-day activity</strong> designed to simulate what it's like to live with Type 1 Diabetes — using a bot to monitor a simulated glucose level throughout each day.
+                        </p>
+                        <p class="rc-body mb-10">
+                            This wasn't research from behind a desk. It was an attempt at genuine empathy — to feel the cognitive load, the interruptions, the anxiety of managing a condition that never lets you fully switch off.
+                        </p>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="callout-box mb-12">
+                            <p class="text-sm font-medium text-gray-700" style="max-width: 42rem;">
+                                "Five days in, I understood something I couldn't have read in any paper: managing blood sugar isn't just a medical task — it's a constant negotiation between your body, your life, and your attention."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/Diary-Study.png</span>
+                                <span class="img-placeholder-caption">Diary study entries and simulated glucose tracking over 5 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Secondary Research -->
+                <section id="research" class="content-section">
+                    <div class="reveal"><span class="section-label">Secondary Research</span></div>
+                    <div class="reveal">
+                        <h2 class="rc-h2 mb-4">After living it, we started reading about it.</h2>
+                        <p class="rc-body mb-6">
+                            After gaining a personal understanding of what it's like to live with diabetes, we began reviewing <strong>academic papers</strong> to deepen our knowledge of the basal insulin initiation and titration process — the clinical and behavioral dimensions we couldn't experience firsthand.
+                        </p>
+                        <p class="rc-body mb-10">
+                            We used <strong>Affinity Diagramming</strong> to categorize and organize our findings — clustering themes across clinical protocols, patient barriers, and provider perspectives.
+                        </p>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/Affinity-Diagram.png</span>
+                                <span class="img-placeholder-caption">Affinity diagram from secondary research synthesis</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interviews -->
+                <section id="interviews" class="content-section">
+                    <div class="reveal"><span class="section-label">User Interview Planning</span></div>
+                    <div class="reveal">
+                        <h2 class="rc-h2 mb-4">We knew the clinical picture. Now we needed the human one.</h2>
+                        <p class="rc-body mb-10">
+                            Secondary research gave us an overall understanding of the insulin initiation and titration process and some of the main struggles patients face. To go deeper, we developed an <strong>interview protocol</strong> for the upcoming sessions — customizing it based on each participant's background, whether they were a patient, caregiver, or clinician.
+                        </p>
+                    </div>
+
+                    <div class="reveal">
+                        <span class="section-label">In-Depth Interviews</span>
+                        <h2 class="rc-h2 mb-4">12+ conversations. Patients, doctors, professors, pharmacists.</h2>
+                        <p class="rc-body mb-6">
+                            We conducted <strong>12+ in-depth interviews</strong> to gather qualitative insights from individuals living with diabetes and healthcare professionals — including endocrinologists, UC San Diego Medical School professors, PharmDs, and nurses.
+                        </p>
+                        <p class="rc-body mb-10">
+                            This step helped us understand personal experiences, challenges, and perspectives related to basal insulin initiation and titration — from both sides of the clinical relationship.
+                        </p>
+                    </div>
+
+                    <!-- Participant types -->
+                    <div class="reveal mb-12">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="persona-box">
+                                <p class="text-2xl mb-3">🩺</p>
+                                <p class="persona-name-rc">Patients</p>
+                                <p class="rc-body text-sm">People living with Type 2 diabetes navigating insulin initiation for the first time or managing ongoing titration.</p>
+                            </div>
+                            <div class="persona-box">
+                                <p class="text-2xl mb-3">👩‍⚕️</p>
+                                <p class="persona-name-rc">Clinicians</p>
+                                <p class="rc-body text-sm">Endocrinologists and UCSD Medical School professors who prescribe and oversee insulin regimens.</p>
+                            </div>
+                            <div class="persona-box">
+                                <p class="text-2xl mb-3">💊</p>
+                                <p class="persona-name-rc">PharmDs & Nurses</p>
+                                <p class="rc-body text-sm">Healthcare professionals who educate patients on insulin use and support titration decisions day-to-day.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/Interview-Protocol.png</span>
+                                <span class="img-placeholder-caption">Interview guide and participant recruitment overview</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Synthesis -->
+                <section id="synthesis" class="content-section">
+                    <div class="reveal"><span class="section-label">Data Analysis</span></div>
+                    <div class="reveal">
+                        <h2 class="rc-h2 mb-4">From 12+ conversations to patterns we could act on.</h2>
+                        <p class="rc-body mb-10">
+                            After gathering data from the interviews, we utilized <strong>thematic analysis</strong> to organize the large dataset and identify key themes — moving from raw interview notes to structured, actionable insights.
+                        </p>
+                    </div>
+
+                    <!-- Thematic Analysis placeholder -->
+                    <div class="reveal mb-16">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/Thematic-Analysis.png</span>
+                                <span class="img-placeholder-caption">Thematic analysis board — key themes from in-depth interviews</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personas -->
+                    <div class="reveal">
+                        <span class="section-label">User Personas</span>
+                        <h2 class="rc-h2 mb-4">Three personas. Because no two patients experience insulin the same way.</h2>
+                        <p class="rc-body mb-10">
+                            As treatment varies greatly from person to person, we organized our analysis around <strong>three distinct user personas</strong> — each representing a different relationship to insulin initiation and a different set of barriers, fears, and motivations.
+                        </p>
+                    </div>
+
+                    <div class="reveal mb-16">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/User-Personas.png</span>
+                                <span class="img-placeholder-caption">Three user personas built from interview synthesis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HMW -->
+                    <div class="reveal mb-16">
+                        <div class="hmw-box">
+                            <p class="text-xs uppercase tracking-[0.2em] text-gray-400 mb-4">Research Question</p>
+                            <p class="text-xl font-semibold leading-relaxed">How do people living with Type 2 diabetes experience and navigate the initiation and titration of basal insulin?</p>
+                        </div>
+                    </div>
+
+                    <!-- Journey Map -->
+                    <div class="reveal">
+                        <span class="section-label">User Journey Mapping</span>
+                        <h2 class="rc-h2 mb-4">Three stages. One difficult journey.</h2>
+                        <p class="rc-body mb-10">
+                            From our interviews, we identified <strong>three key stages</strong> in the patient's journey with basal insulin. We crafted our research insights into a clear narrative by aligning them with these stages — showing where patients struggle, where they need support, and where the system is failing them.
+                        </p>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-inner">
+                                <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" stroke-width="1.2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </svg>
+                                <span class="img-placeholder-label">Images/Journey-Map.png</span>
+                                <span class="img-placeholder-caption">Patient journey map across the three key stages of insulin initiation</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reflection -->
+                <section id="takeaways" class="content-section">
+                    <div class="reveal"><span class="section-label">Reflection</span></div>
+                    <div class="reveal">
+                        <h2 class="rc-h2 mb-10">What I learned</h2>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="takeaway-item">
+                            <div>
+                                <h3 class="rc-h3 mb-2">👉 Be Flexible</h3>
+                                <p class="rc-body text-sm">
+                                    Originally, we wanted to conduct an onsite clinical observation at a local hospital — but our application was denied. Instead of stopping there, we reached out to other professionals in the community and eventually connected with a PharmD at the hospital. She was willing to show us part of what an insulin initiation education visit for first-timers looks like via Zoom. The constraint became a different kind of access.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="takeaway-item">
+                            <div>
+                                <h3 class="rc-h3 mb-2">Empathy has to be practiced, not just assumed</h3>
+                                <p class="rc-body text-sm">
+                                    The diary study fundamentally changed how I listened in interviews. Having spent five days in a simulated version of a diabetic routine, I stopped asking surface-level questions and started asking about the details that actually mattered — the midnight alerts, the mental math, the fear. Immersion made me a better researcher.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="takeaway-item">
+                            <div>
+                                <h3 class="rc-h3 mb-2">The clinical and the personal are inseparable</h3>
+                                <p class="rc-body text-sm">
+                                    Secondary research gave us the medical framework. Interviews gave us the human cost. Neither was sufficient on its own. The most meaningful insights came at the intersection — when a patient's lived experience directly contradicted what the clinical literature described as "standard protocol." That gap is where the real design opportunity lives.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <footer class="border-t border-gray-100 py-20 px-8 flex flex-col items-center gap-4">
+            <a href="ucsd-library-case-study.html" class="footer-next">Previous Project: Design for Accessibility →</a>
+            <div class="flex gap-6 mt-4">
+                <a href="https://www.linkedin.com/in/yi-lu-b014b31a7/" target="_blank" rel="noopener noreferrer" class="text-xs text-gray-400 hover:text-black transition-colors tracking-widest uppercase">LinkedIn</a>
+                <a href="https://drive.google.com/file/d/1Ejc0vhzJfgfPCsqv5TCkkbdpEy7BgrJR/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-xs text-gray-400 hover:text-black transition-colors tracking-widest uppercase">Resume</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Scroll progress bar
+        const bar = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const total = document.body.scrollHeight - window.innerHeight;
+            bar.style.width = (scrolled / total * 100) + '%';
+        });
+
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(sec => {
+                if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
