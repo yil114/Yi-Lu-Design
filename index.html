@@ -26,7 +26,6 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
-    <script src="https://unpkg.com/matter-js@0.19.0/build/matter.min.js"></script>
     <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -502,7 +501,7 @@
             <img
                 src={src}
                 alt={alt}
-                loading="eager"
+                loading="lazy"
                 decoding="async"
                 onLoad={e => e.target.classList.add('loaded')}
             />
@@ -522,7 +521,7 @@
                             <img src="Images/yiprofilepic.png" alt="Yi Lu" style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', transformOrigin:'center top'}} />
                         </div>
                         <div>
-                            <h1>Hi, I'm Yi. I design experiences that turn complex workflows into something that just feels natural.</h1>
+                            <h1>Hi, I'm Yi. I research and design experiences that turn complex workflows into something that just feels natural.</h1>
                             <p style={{marginTop: '20px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed @ Volvo Group, Ricoh USA, Dexcom</p>
                             <p style={{marginTop: '8px', fontSize: '14px', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Studied Human-Computer Interaction @ Cornell University & UC San Diego</p>
                         </div>
@@ -583,7 +582,7 @@
                             <a href="https://yil114.github.io/fog-project" target="_blank" rel="noopener noreferrer" className="card-link">
                                 <div className="card">
                                     <span className="card-tag">Interaction · Live 2026</span>
-                                    <Img src="https://images.squarespace-cdn.com/content/v1/68d5a437b484267b9999188c/7c517aee-177d-4956-8232-81a06acc56c3/product-fog-demo.gif" alt="Froggy Drawing" />
+                                    <Img src="Images/project-fog-demo.gif" alt="Froggy Drawing" />
                                 </div>
                                 <div className="card-caption">
                                     <div style={{fontSize:'20px', fontWeight:'500', color:'var(--text)', marginBottom:'4px'}}>Froggy Drawing →</div>
