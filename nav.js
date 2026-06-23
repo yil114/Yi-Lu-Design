@@ -52,6 +52,14 @@
             .nav-group-label { font-size: 14px; margin-bottom: 12px; }
             .nav-group { margin-bottom: 40px; }
         }
+        @media (min-width: 1900px) {
+            .sidebar { padding: 58px 50px 58px 44px; }
+            .sidebar-name { font-size: 26px; margin-bottom: 10px; }
+            .sidebar-role { font-size: 16px; }
+            .nav-link { font-size: 25px; line-height: 2.3; }
+            .nav-group-label { font-size: 16px; margin-bottom: 14px; }
+            .nav-group { margin-bottom: 44px; }
+        }
         @media (max-width: 680px) {
             .sidebar { position: relative; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; gap: 16px; padding: 20px; }
             .sidebar-name { margin-bottom: 0; }
