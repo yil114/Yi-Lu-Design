@@ -31,19 +31,23 @@
             min-height: 100vh;
         }
 
-
         .main {
             margin-left: var(--sidebar-w);
             flex: 1;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding: 80px 120px 48px 48px;
-            max-width: 1220px;
+            padding: 80px 80px 80px 56px;
         }
 
-        .about-heading {
-            font-size: clamp(20px, 5vw, 35px);
+        .about-intro {
+            padding-bottom: 72px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 72px;
+        }
+
+        .about-intro h1 {
+            font-size: clamp(28px, 4vw, 52px);
             font-weight: 300;
             letter-spacing: -0.03em;
             line-height: 1.15;
@@ -51,29 +55,30 @@
             margin-bottom: 20px;
         }
 
-        .about-body {
-            font-size: clamp(15px, 1.5vw, 18px);
+        .about-intro p {
+            font-size: clamp(15px, 1.4vw, 18px);
             font-weight: 300;
-            line-height: 1.6;
-            color: var(--text);
-            max-width: 920px;
-        }
-
-        .site-footer {
-            margin-top: 48px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: var(--muted);
-            font-family: "JetBrains Mono", monospace;
-        }
-
-        .about-sections {
-            margin-top: 64px;
+            line-height: 1.7;
+            color: #666;
+            max-width: 640px;
         }
 
         .about-section {
-            padding-bottom: 56px;
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 0 56px;
+            padding-bottom: 72px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 72px;
+        }
+
+        .about-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .about-meta {
+            padding-top: 4px;
         }
 
         .about-num {
@@ -82,31 +87,63 @@
             font-weight: 300;
             letter-spacing: 0.12em;
             display: block;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
 
-        .about-divider {
-            border: none;
-            border-top: 1px solid #f0f0f0;
-            margin: 0 0 56px 0;
+        .about-heading {
+            font-size: clamp(16px, 1.4vw, 20px);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+            color: var(--text);
         }
 
-        .img-placeholder-row {
+        .about-content p {
+            font-size: clamp(14px, 1.2vw, 17px);
+            font-weight: 300;
+            line-height: 1.75;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        .about-content p:last-of-type { margin-bottom: 0; }
+
+        .about-img-row {
             margin-top: 32px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        .img-placeholder {
+        .about-img-row img {
+            width: 100%;
             aspect-ratio: 4 / 3;
-            background: #f7f7f7;
-            border: 1.5px dashed #e0e0e0;
+            object-fit: cover;
             border-radius: 8px;
+            display: block;
+        }
+
+        .site-footer {
+            margin-top: 80px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        @media (max-width: 860px) {
+            .about-section { grid-template-columns: 1fr; gap: 16px; }
         }
 
         @media (max-width: 680px) {
             .main { margin-left: 0; padding: 32px 24px 48px; }
+            .about-img-row { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 1600px) {
+            :root { --sidebar-w: 260px; }
+            .main { padding: 96px 96px 96px 72px; }
         }
     </style>
     <meta charset="UTF-8">
@@ -120,20 +157,6 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body>
     <div id="root"></div>
@@ -144,44 +167,44 @@
     function App() {
         return (
             <div className="shell">
-
-                {/* ── Main ── */}
                 <main className="main">
-                    <div className="about-sections">
 
-                        <div className="about-section">
+                    <div className="about-intro">
+                        <h1>A designer who starts<br/>with people.</h1>
+                        <p style={{marginTop:'24px'}}>I research and design experiences that turn complex workflows into something that just feels natural. I care about the details — the moment a user sighs with relief, not frustration.</p>
+                    </div>
+
+                    <div className="about-section">
+                        <div className="about-meta">
                             <span className="about-num">01</span>
-                            <h1 className="about-heading">Design journey</h1>
-                            <hr className="about-divider" />
-                            <p className="about-body">I started my design journey working with people living with diabetes at Don Norman's Design Lab at UC San Diego. That experience opened my eyes to how designers can create real impact, not necessarily big gestures, but simply by taking the time to understand people's lives.</p>
-
-                            <div className="img-placeholder-row">
-                                <img src="Images/donnorman.png" alt="Don Norman's Design Lab" style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:'8px'}} />
-                                <img src="Images/YiLu_Graduation_CornellTech.png" alt="Yi Lu graduation" style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:'8px'}} />
+                            <h2 className="about-heading">Design journey</h2>
+                        </div>
+                        <div className="about-content">
+                            <p>I started my design journey working with people living with diabetes at Don Norman's Design Lab at UC San Diego. That experience opened my eyes to how designers can create real impact — not necessarily big gestures, but simply by taking the time to understand people's lives.</p>
+                            <div className="about-img-row">
+                                <img src="Images/donnorman.png" alt="Don Norman's Design Lab" />
+                                <img src="Images/YiLu_Graduation_CornellTech.png" alt="Yi Lu graduation at Cornell Tech" />
                             </div>
                         </div>
+                    </div>
 
-                      
-                        <div className="about-section">
+                    <div className="about-section">
+                        <div className="about-meta">
                             <span className="about-num">02</span>
-                            <h1 className="about-heading">I love getting people together</h1>
-                            <hr className="about-divider" />
-                            <p className="about-body">I hosted Cornell Tech's Creative Tech Summit and served as student president of MASA at UC San Diego, where I organized events including an Asian Night Market that brought together over 2,500 participants. Building community is something I care about as much as building products.</p>
-                            <p className="about-body" style={{marginTop: '16px'}}>In May 2026, I hosted a creative tech summit at Cornell Tech!</p>
-
-                            <div className="img-placeholder-row">
-                                <img src="Images/MASA_Night Market.png" alt="MASA Night Market" style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:'8px'}} />
-                                <img src= "Images/creative tech.png" alt="Cornell Tech Creative Tech Summit" style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:'8px'}} />
+                            <h2 className="about-heading">I love getting people together</h2>
+                        </div>
+                        <div className="about-content">
+                            <p>I hosted Cornell Tech's Creative Tech Summit and served as student president of MASA at UC San Diego, where I organized events including an Asian Night Market that brought together over 2,500 participants.</p>
+                            <p>Building community is something I care about as much as building products.</p>
+                            <div className="about-img-row">
+                                <img src="Images/MASA_Night Market.png" alt="MASA Night Market" />
+                                <img src="Images/creative tech.png" alt="Cornell Tech Creative Tech Summit" />
                             </div>
                         </div>
-
-                       
-
                     </div>
 
                     <footer className="site-footer">&copy; 2026 Yi Lu</footer>
                 </main>
-
             </div>
         );
     }
