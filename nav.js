@@ -43,6 +43,13 @@
         .nav-link:hover { color: var(--muted); }
         .nav-link.dim { color: var(--muted); font-weight: 300; }
         .nav-link.active { font-weight: 500; }
+        @media (min-width: 1600px) {
+            .sidebar { padding: 44px 36px 44px 32px; }
+            .sidebar-name { font-size: 18px; margin-bottom: 6px; }
+            .nav-link { font-size: 17px; line-height: 2; }
+            .nav-group-label { font-size: 12px; margin-bottom: 8px; }
+            .nav-group { margin-bottom: 32px; }
+        }
         @media (max-width: 680px) {
             .sidebar { position: relative; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; gap: 16px; padding: 20px; }
             .sidebar-name { margin-bottom: 0; }
