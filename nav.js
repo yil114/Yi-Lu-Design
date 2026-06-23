@@ -43,9 +43,11 @@
         .nav-link:hover { color: var(--muted); }
         .nav-link.dim { color: var(--muted); font-weight: 300; }
         .nav-link.active { font-weight: 500; }
+        .sidebar-role { font-size: 11px; color: var(--muted); font-weight: 300; letter-spacing: 0.02em; }
         @media (min-width: 1600px) {
             .sidebar { padding: 52px 44px 52px 40px; }
-            .sidebar-name { font-size: 23px; margin-bottom: 10px; }
+            .sidebar-name { font-size: 23px; margin-bottom: 8px; }
+            .sidebar-role { font-size: 14px; }
             .nav-link { font-size: 22px; line-height: 2.2; }
             .nav-group-label { font-size: 14px; margin-bottom: 12px; }
             .nav-group { margin-bottom: 40px; }
@@ -66,7 +68,7 @@
         aside.innerHTML = `
             <div style="margin-bottom:40px">
                 <a href="index.html" class="sidebar-name">Yi Lu</a>
-                <div style="font-size:11px;color:var(--muted);font-weight:300;letter-spacing:0.02em">Product Designer & Researcher</div>
+                <div class="sidebar-role">Product Designer & Researcher</div>
             </div>
             <nav>
                 <div class="nav-group">
