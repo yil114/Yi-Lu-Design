@@ -114,7 +114,7 @@
         }
 
         .page-intro h1 {
-            font-size: clamp(20px, 2.4vw, 42px);
+            font-size: clamp(20px, 2.4vw, 56px);
             font-weight: 200;
             letter-spacing: -0.03em;
             line-height: 1.2;
@@ -202,7 +202,7 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -44%);
-            font-size: clamp(24px, 2.4vw, 44px);
+            font-size: clamp(24px, 2.4vw, 58px);
             font-weight: 500;
             color: #1a1a1a;
             z-index: 3;
@@ -374,6 +374,14 @@
             .main { padding: 0 80px 0 72px; }
             .card-label { font-size: 15px; }
             .card-tag, .card-tools span { font-size: 13px; }
+        }
+
+        /* ── 24-inch monitor (~1920px+) ── */
+        @media (min-width: 1900px) {
+            :root { --sidebar-w: 320px; }
+            .main { padding: 0 120px 0 96px; }
+            .card-label { font-size: 18px; }
+            .card-tag, .card-tools span { font-size: 15px; }
         }
 
         /* ── Tablet ── */
@@ -587,13 +595,13 @@
 
                     {/* Intro */}
                     <div className="page-intro">
-                        <div style={{width:'clamp(128px, 10vw, 180px)', height:'clamp(128px, 10vw, 180px)', borderRadius:'50%', overflow:'hidden', flexShrink:'0'}}>
+                        <div style={{width:'clamp(128px, 10vw, 240px)', height:'clamp(128px, 10vw, 240px)', borderRadius:'50%', overflow:'hidden', flexShrink:'0'}}>
                             <img src="Images/yiprofilepic.png" alt="Yi Lu" style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', transformOrigin:'center top'}} />
                         </div>
                         <div>
                             <h1>Hi, I'm Yi. I research and design experiences that turn complex workflows into something that just feels natural.</h1>
-                            <p style={{marginTop: '20px', fontSize: 'clamp(14px, 1.3vw, 22px)', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed & researched @ Volvo Group, Ricoh USA, Dexcom</p>
-                            <p style={{marginTop: '8px', fontSize: 'clamp(14px, 1.3vw, 22px)', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Studied Human-Computer Interaction @ Cornell University & UC San Diego</p>
+                            <p style={{marginTop: '20px', fontSize: 'clamp(14px, 1.3vw, 28px)', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Previously designed & researched @ Volvo Group, Ricoh USA, Dexcom</p>
+                            <p style={{marginTop: '8px', fontSize: 'clamp(14px, 1.3vw, 28px)', fontWeight: '300', color: 'var(--muted)', letterSpacing: '0.01em'}}>Studied Human-Computer Interaction @ Cornell University & UC San Diego</p>
                         </div>
                     </div>
 
