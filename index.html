@@ -114,7 +114,7 @@
         }
 
         .page-intro h1 {
-            font-size: clamp(20px, 3.8vw, 32px);
+            font-size: clamp(20px, 2.4vw, 42px);
             font-weight: 200;
             letter-spacing: -0.03em;
             line-height: 1.2;
@@ -143,13 +143,14 @@
             border-radius: 8px;
             overflow: hidden;
             position: relative;
-            min-height: 380px;
+            aspect-ratio: 3 / 2;
+            min-height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .card.short { min-height: 260px; }
+        .card.short { aspect-ratio: 16 / 9; min-height: 200px; }
 
         .card img {
             position: absolute;
@@ -201,7 +202,7 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -44%);
-            font-size: 34px;
+            font-size: clamp(24px, 2.4vw, 44px);
             font-weight: 500;
             color: #1a1a1a;
             z-index: 3;
@@ -367,15 +368,17 @@
             border-radius: 8px;
         }
 
-        /* ── Monitor ── */
+        /* ── Large screen (16-inch MacBook ~1728px) ── */
         @media (min-width: 1600px) {
-            .card { min-height: 520px; }
+            :root { --sidebar-w: 260px; }
+            .main { padding: 0 80px 0 72px; }
+            .card-label { font-size: 15px; }
+            .card-tag, .card-tools span { font-size: 13px; }
         }
 
         /* ── Tablet ── */
         @media (max-width: 1024px) {
             .main { padding: 0 32px 0 32px; }
-            .card { min-height: 300px; }
         }
 
         /* ── Mobile ── */
