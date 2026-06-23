@@ -44,18 +44,11 @@
         .nav-link.dim { color: var(--muted); font-weight: 300; }
         .nav-link.active { font-weight: 500; }
         @media (min-width: 1600px) {
-            .sidebar { padding: 44px 36px 44px 32px; }
-            .sidebar-name { font-size: 18px; margin-bottom: 6px; }
-            .nav-link { font-size: 17px; line-height: 2; }
-            .nav-group-label { font-size: 12px; margin-bottom: 8px; }
-            .nav-group { margin-bottom: 30px; }
-        }
-        @media (min-width: 1900px) {
-            .sidebar { padding: 60px 48px 60px 44px; }
-            .sidebar-name { font-size: 22px; margin-bottom: 10px; }
-            .nav-link { font-size: 21px; line-height: 2.2; }
+            .sidebar { padding: 52px 44px 52px 40px; }
+            .sidebar-name { font-size: 23px; margin-bottom: 10px; }
+            .nav-link { font-size: 22px; line-height: 2.2; }
             .nav-group-label { font-size: 14px; margin-bottom: 12px; }
-            .nav-group { margin-bottom: 42px; }
+            .nav-group { margin-bottom: 40px; }
         }
         @media (max-width: 680px) {
             .sidebar { position: relative; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; gap: 16px; padding: 20px; }
