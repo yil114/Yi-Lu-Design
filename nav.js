@@ -93,10 +93,21 @@
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-label">ai design</div>
-                    <a href="index.html#ai-design" class="nav-link">AI Design</a>
+                    <a href="index.html#ai-design" class="nav-link" id="nav-ai-design">AI Design</a>
                 </div>
             </nav>
         `;
         document.body.appendChild(aside);
+
+        const aiLink = document.getElementById('nav-ai-design');
+        if (aiLink) {
+            aiLink.addEventListener('click', function (e) {
+                const target = document.getElementById('ai-design');
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
     };
 })();
