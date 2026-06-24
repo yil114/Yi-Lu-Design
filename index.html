@@ -21,7 +21,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap"/>
 
-    <!-- Production React — 3x smaller than dev builds -->
+    <!-- Production React, 3x smaller than dev builds -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
@@ -183,7 +183,7 @@
 
         .card:hover .card-overlay { opacity: 1; }
 
-        /* card label — always visible top left */
+        /* card label, always visible top left */
         .card-label {
             position: absolute;
             top: 16px; left: 18px;
@@ -197,7 +197,7 @@
 
         .card:hover .card-label { opacity: 0; }
 
-        /* hover title — centered on hover */
+        /* hover title, centered on hover */
         .card-hover-title {
             position: absolute;
             top: 50%; left: 50%;
@@ -623,14 +623,16 @@
                                 </div>
                             </a>
 
-                            {/* UCSD Library — coming soon */}
-                            <div className="card soon">
-                                <div className="card-overlay"></div>
-                                <span className="card-label">UC San Diego Library →</span>
-                                <span className="card-hover-title">UC San Diego Library</span>
-                                <span className="card-tag">Accessibility · Soon</span>
-                                <Img src="Images/UC San Diego Library Case Study.jpg" alt="UCSD Library" />
-                            </div>
+                            {/* UCSD Library */}
+                            <a href="ucsd-library-case-study.html" className="card-link">
+                                <div className="card">
+                                    <div className="card-overlay"></div>
+                                    <span className="card-label">UC San Diego Library →</span>
+                                    <span className="card-hover-title">UC San Diego Library</span>
+                                    <span className="card-tag">Accessibility</span>
+                                    <Img src="Images/UC San Diego Library Case Study.jpg" alt="UCSD Library" />
+                                </div>
+                            </a>
 
                             {/* Dexcom */}
                             <a href="dexcom_casestudy.html" className="card-link">
