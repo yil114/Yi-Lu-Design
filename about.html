@@ -166,7 +166,17 @@
     <script type="text/babel" data-presets="react">
     let _dragZ = 0;
 
-    function DraggableImg({ src, alt, x, y, rot, w, noRatio }) {
+    function useWindowWidth() {
+        const [w, setW] = React.useState(window.innerWidth);
+        React.useEffect(() => {
+            const fn = () => setW(window.innerWidth);
+            window.addEventListener('resize', fn);
+            return () => window.removeEventListener('resize', fn);
+        }, []);
+        return w;
+    }
+
+    function DraggableImg({ src, alt, x, y, rot, w, noRatio, scale = 1 }) {
         const [pos, setPos] = React.useState({ x, y });
         const [dragging, setDragging] = React.useState(false);
         const [z, setZ] = React.useState(1);
@@ -177,11 +187,11 @@
             _dragZ += 1;
             setZ(_dragZ);
             setDragging(true);
-            const ox = e.clientX - ref.current.x;
-            const oy = e.clientY - ref.current.y;
+            const startMx = e.clientX, startMy = e.clientY;
+            const startPx = ref.current.x, startPy = ref.current.y;
             const move = (e) => {
-                const nx = e.clientX - ox;
-                const ny = e.clientY - oy;
+                const nx = startPx + (e.clientX - startMx) / scale;
+                const ny = startPy + (e.clientY - startMy) / scale;
                 ref.current = { x: nx, y: ny };
                 setPos({ x: nx, y: ny });
             };
@@ -218,7 +228,7 @@
         );
     }
 
-    function DraggableVideo({ src, x, y, rot, w }) {
+    function DraggableVideo({ src, x, y, rot, w, scale = 1 }) {
         const [pos, setPos] = React.useState({ x, y });
         const [dragging, setDragging] = React.useState(false);
         const [z, setZ] = React.useState(1);
@@ -233,13 +243,12 @@
             setZ(_dragZ);
             setDragging(true);
             didMove.current = false;
-            const startX = e.clientX, startY = e.clientY;
-            const ox = e.clientX - ref.current.x;
-            const oy = e.clientY - ref.current.y;
+            const startMx = e.clientX, startMy = e.clientY;
+            const startPx = ref.current.x, startPy = ref.current.y;
             const move = (e) => {
-                if (Math.abs(e.clientX - startX) > 3 || Math.abs(e.clientY - startY) > 3) didMove.current = true;
-                const nx = e.clientX - ox;
-                const ny = e.clientY - oy;
+                if (Math.abs(e.clientX - startMx) > 3 || Math.abs(e.clientY - startMy) > 3) didMove.current = true;
+                const nx = startPx + (e.clientX - startMx) / scale;
+                const ny = startPy + (e.clientY - startMy) / scale;
                 ref.current = { x: nx, y: ny };
                 setPos({ x: nx, y: ny });
             };
@@ -320,7 +329,34 @@
         );
     }
 
+    // Wraps the draggable canvas so it scales proportionally to screen width.
+    // The inner div renders at full "design" dimensions; CSS scale shrinks it visually.
+    // Outer div reserves the correct scaled height so nothing overlaps below.
+    function ScaledCanvas({ height, scale, marginTop = 32, children }) {
+        return (
+            <div style={{ position: 'relative', height: height * scale, marginTop, overflow: 'visible' }}>
+                <div style={{
+                    position: 'absolute', top: 0, left: 0,
+                    width: '100%', height: height,
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                }}>
+                    {children}
+                </div>
+            </div>
+        );
+    }
+
     function App() {
+        const winW = useWindowWidth();
+        const isMobile = winW < 680;
+        // Scale: 1.0 at 14" MacBook (~1440px), shrinks on smaller screens, caps at 1.15 on large
+        // 572 = sidebar(220) + main padding(56+80) + meta col(160) + grid gap(56)
+        // 868 = reference canvas content width at 1440px
+        const scale = isMobile ? 1 : Math.min(1.15, Math.max(0.5, (winW - 572) / 868));
+
+        const staticImgStyle = { width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 8, display: 'block' };
+
         return (
             <div className="shell">
                 <main className="main">
@@ -335,17 +371,24 @@
                             <h2 className="about-heading">Design journey</h2>
                         </div>
                         <div className="about-content">
-                            <p>I started my design journey working with people living with diabetes at the Design Lab founded by Don Norman at UC San Diego. 
-                                That experience opened my eyes to how designers can make people's lives better. 
-                                Even though I wasn't doing anything major, just being there, listening to people's stories, and trying to understand how we could better help them. 
-                                It made them feel happy and appreciated. 
+                            <p>I started my design journey working with people living with diabetes at the Design Lab founded by Don Norman at UC San Diego.
+                                That experience opened my eyes to how designers can make people's lives better.
+                                Even though I wasn't doing anything major, just being there, listening to people's stories, and trying to understand how we could better help them.
+                                It made them feel happy and appreciated.
                                 <br/>
                                 <br/>Through that experience, I realized that design can truly make a difference in people's lives. Ever since then, I have never stopped designing and striving to better understand people!
                         </p>
-                            <div style={{ position: 'relative', height: 360, marginTop: 32 }}>
-                                <DraggableImg src="Images/donnorman.png" alt="Don Norman's Design Lab" x={0} y={20} rot={-2} w={320} />
-                                <DraggableImg src="Images/YiLu_Graduation_CornellTech.png" alt="Yi Lu graduation at Cornell Tech" x={335} y={0} rot={2} w={320} />
-                            </div>
+                            {isMobile ? (
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 16 }}>
+                                    <img src="Images/donnorman.png" alt="Don Norman's Design Lab" style={staticImgStyle} />
+                                    <img src="Images/YiLu_Graduation_CornellTech.png" alt="Yi Lu graduation at Cornell Tech" style={staticImgStyle} />
+                                </div>
+                            ) : (
+                                <ScaledCanvas height={360} scale={scale} marginTop={32}>
+                                    <DraggableImg src="Images/donnorman.png" alt="Don Norman's Design Lab" x={0} y={20} rot={-2} w={320} scale={scale} />
+                                    <DraggableImg src="Images/YiLu_Graduation_CornellTech.png" alt="Yi Lu graduation at Cornell Tech" x={335} y={0} rot={2} w={320} scale={scale} />
+                                </ScaledCanvas>
+                            )}
                         </div>
                     </div>
 
@@ -357,11 +400,21 @@
                         <div className="about-content">
                             <p>I hosted Cornell Tech's Creative Tech Summit and served as student president of MASA at UC San Diego, where I organized events including an Asian Night Market that brought together over 2,500 participants.</p>
                             <p>Building community is something I care about as much as building products.</p>
-                            <div style={{ position: 'relative', height: 400, marginTop: 32 }}>
-                                <DraggableImg src="Images/creative tech.png" alt="Cornell Tech Creative Tech Summit" x={10} y={10} rot={-3} w={320} />
-                                <DraggableImg src="Images/MASA_Night Market.png" alt="MASA Night Market" x={340} y={25} rot={2} w={320} />
-                                <DraggableVideo src="asian-night-market-video.mp4" x={670} y={20} rot={1} w={200} />
-                            </div>
+                            {isMobile ? (
+                                <div style={{ marginTop: 16 }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                                        <img src="Images/creative tech.png" alt="Cornell Tech Creative Tech Summit" style={staticImgStyle} />
+                                        <img src="Images/MASA_Night Market.png" alt="MASA Night Market" style={staticImgStyle} />
+                                    </div>
+                                    <video src="asian-night-market-video.mp4" controls playsInline style={{ width: '100%', borderRadius: 8, marginTop: 10 }} />
+                                </div>
+                            ) : (
+                                <ScaledCanvas height={400} scale={scale} marginTop={32}>
+                                    <DraggableImg src="Images/creative tech.png" alt="Cornell Tech Creative Tech Summit" x={10} y={10} rot={-3} w={320} scale={scale} />
+                                    <DraggableImg src="Images/MASA_Night Market.png" alt="MASA Night Market" x={340} y={25} rot={2} w={320} scale={scale} />
+                                    <DraggableVideo src="asian-night-market-video.mp4" x={670} y={20} rot={1} w={200} scale={scale} />
+                                </ScaledCanvas>
+                            )}
                         </div>
                     </div>
 
@@ -371,12 +424,19 @@
                             <h2 className="about-heading">I love trying new things</h2>
                         </div>
                         <div className="about-content">
-                            <p> I started playing table tennis 2 months ago and have been enjoying it ever since! 
+                            <p> I started playing table tennis 2 months ago and have been enjoying it ever since!
                                 </p>
-                            <div style={{ position: 'relative', height: 360, marginTop: 16 }}>
-                                <DraggableImg src="Images/pingpong.gif" alt="Ping pong" x={20} y={10} rot={-1} w={340} noRatio />
-                                <DraggableImg src="Images/hikinginjoshuatree.JPG" alt="Hiking in Joshua Tree" x={370} y={15} rot={2} w={200} noRatio />
-                            </div>
+                            {isMobile ? (
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 16 }}>
+                                    <img src="Images/pingpong.gif" alt="Ping pong" style={{ width: '100%', borderRadius: 8, display: 'block' }} />
+                                    <img src="Images/hikinginjoshuatree.JPG" alt="Hiking in Joshua Tree" style={{ width: '100%', borderRadius: 8, display: 'block' }} />
+                                </div>
+                            ) : (
+                                <ScaledCanvas height={360} scale={scale} marginTop={16}>
+                                    <DraggableImg src="Images/pingpong.gif" alt="Ping pong" x={20} y={10} rot={-1} w={340} noRatio scale={scale} />
+                                    <DraggableImg src="Images/hikinginjoshuatree.JPG" alt="Hiking in Joshua Tree" x={370} y={15} rot={2} w={200} noRatio scale={scale} />
+                                </ScaledCanvas>
+                            )}
                         </div>
                     </div>
 
