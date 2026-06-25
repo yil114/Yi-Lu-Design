@@ -415,7 +415,7 @@
     function FieldCarousel({ images }) {
         const [idx, setIdx] = useState(0);
         const n = images.length;
-        const CARD = 220;
+        const CARD = 360;
         const GAP  = 12;
         const offset = -(idx * (CARD + GAP));
 
@@ -433,7 +433,7 @@
                         {images.map((src, i) => (
                             <div key={i} style={{ flex: '0 0 ' + CARD + 'px', borderRadius: 8, overflow: 'hidden', background: '#f3f4f6' }}>
                                 <img src={src} alt={'Field Study ' + (i + 1)}
-                                    style={{ width: CARD, height: 160, objectFit: 'cover', display: 'block' }} />
+                                    style={{ width: '100%', display: 'block' }} />
                             </div>
                         ))}
                     </div>
@@ -482,9 +482,14 @@
         const navItems = [
             { label: "Design Challenge", id: "design-challenge" },
             { label: "Process",          id: "process" },
-            { label: "UX Research",         id: "discover" },
+            { label: "UX Research",      id: "discover", children: [
+                { label: "Field Study",          id: "field-study" },
+                { label: "Secondary Research",   id: "secondary-research" },
+                { label: "Competitive Analysis", id: "competitive-analysis" },
+            ]},
             { label: "User Pain Points",           id: "define" },
-            { label: "User Persona",          id: "diverge" },
+            { label: "User Persona",          id: "user-persona" },
+            { label: "Journey Map",           id: "journey-map" },
             { label: "Wireframes",          id: "develop" },
             { label: "High Fidelity Prototypes",          id: "deliver" },
             { label: "Learnings",        id: "learnings" },
@@ -507,14 +512,14 @@
         };
 
         useEffect(() => {
-            const ids = navItems.map(n => n.id);
+            const allIds = navItems.flatMap(n => n.children ? [n.id, ...n.children.map(c => c.id)] : [n.id]);
             const onScroll = () => {
                 const doc = document.documentElement;
                 const pct = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
                 const bar = document.getElementById('scroll-progress');
                 if (bar) bar.style.width = (pct * 100) + '%';
-                let cur = ids[0];
-                ids.forEach(id => {
+                let cur = allIds[0];
+                allIds.forEach(id => {
                     const el = document.getElementById(id);
                     if (el && window.scrollY >= el.offsetTop - 180) cur = id;
                 });
@@ -550,6 +555,19 @@
                                            className={`nav-link text-[10px] tracking-[0.12em] uppercase text-gray-400 ${activeSection === item.id ? 'active' : ''}`}>
                                             {item.label}
                                         </a>
+                                        {item.children && (
+                                            <ul className="mt-3 space-y-2 pl-3 border-l border-gray-100">
+                                                {item.children.map(child => (
+                                                    <li key={child.id}>
+                                                        <a href={`#${child.id}`}
+                                                           className={`nav-link text-[9px] tracking-[0.1em] uppercase text-gray-400 ${activeSection === child.id ? 'active' : ''}`}
+                                                           style={{ fontWeight: activeSection === child.id ? 500 : 300 }}>
+                                                            {child.label}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -621,7 +639,7 @@
                             </Reveal>
 
                             <Reveal delay={0.05} className="mb-12">
-                                <div className="stat-block pt-6">
+                                <div id="field-study" className="stat-block pt-6">
                                     <span className="iter-badge mb-3" style={{ display: 'inline-block' }}>1. Field Study</span>
                                     <p className="rc-body mb-8">Highway driving, trailer pickup, long hauls. I experienced what it actually felt like to be behind the wheel before forming any design assumptions.</p>
                                     <FieldCarousel images={[
@@ -636,7 +654,7 @@
                             </Reveal>
 
                             <Reveal delay={0.05} className="mb-12">
-                                <div className="stat-block pt-6">
+                                <div id="secondary-research" className="stat-block pt-6">
                                     <span className="iter-badge mb-3" style={{ display: 'inline-block' }}>2. Secondary Research</span>
                                     <h3 className="rc-h3 mb-2">Validated field observations via social media platforms.</h3>
                                     <p className="rc-body mb-8">TikTok, YouTube, Reddit, Instagram, and Facebook. Key finding: <strong>drivers commonly skip the legally required pre-trip inspection</strong>, a significant safety and compliance gap.</p>
@@ -645,7 +663,7 @@
                             </Reveal>
 
                             <Reveal delay={0.05}>
-                                <div className="stat-block pt-6">
+                                <div id="competitive-analysis" className="stat-block pt-6">
                                     <span className="iter-badge mb-3" style={{ display: 'inline-block' }}>3. Competitive Analysis</span>
                                     <h3 className="rc-h3 mb-2">Analyzed 12+ transportation companies to map the in-vehicle HMI landscape.</h3>
                                     <p className="rc-body mb-8">Volvo, Freightliner, Kenworth, Peterbilt, Western Star, BYD, and others across North America and China, identifying where the industry stood on in-cab technology.</p>
@@ -694,7 +712,7 @@
 
                             <Reveal delay={0.05} className="mt-4">
                                 <span className="section-label">Persona</span>
-                                <h2 className="rc-h2 mb-6">Meet Jackson, the driver we designed for.</h2>
+                                <h2 id="user-persona" className="rc-h2 mb-6">Meet Jackson, the driver we designed for.</h2>
                             
                                 <div className="mt-8">
                                     <CaseImg src="Images/Volvo/Driver Persona.png" alt="Driver Persona, Jackson" />
@@ -706,7 +724,7 @@
                         <section id="diverge" className="content-section">
                             <Reveal><span className="section-label">Diverge</span></Reveal>
                             <Reveal delay={0.05}>
-                                <h2 className="rc-h2 mb-4">User Journey Map, Jackson's full two-day experience on the road.</h2>
+                                <h2 id="journey-map" className="rc-h2 mb-4">User Journey Map, Jackson's full two-day experience on the road.</h2>
                                 <p className="rc-body mb-10">Mapping the complete journey across two days helped identify exactly where a smartwatch could intervene, automate, or provide AI support most meaningfully.</p>
                             </Reveal>
                             <Reveal delay={0.05}>
