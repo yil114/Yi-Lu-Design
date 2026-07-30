@@ -86,10 +86,10 @@
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-label">product design</div>
-                    <a href="volvo-smartwatch-case-study.html" class="nav-link${active === 'volvo' ? ' active' : ''}">Volvo Group</a>
                     <a href="ricoh_casestudy.html" class="nav-link${active === 'ricoh' ? ' active' : ''}">Ricoh USA</a>
+                    <a href="volvo-smartwatch-case-study.html" class="nav-link${active === 'volvo' ? ' active' : ''}">Volvo Group</a>
                     <a href="dexcom_casestudy.html" class="nav-link${active === 'dexcom' ? ' active' : ''}">Dexcom</a>
-                    <a href="ucsd-library-case-study.html" class="nav-link dim">UCSD Library</a>
+                    <a href="ucsd-library-case-study.html" class="nav-link${active === 'ucsd' ? ' active' : ''}">UCSD Library</a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-label">ai design</div>

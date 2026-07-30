@@ -684,18 +684,26 @@
                             </a>
 
                             {/* Goldfish Pond */}
-                            <a href="https://yil114.github.io/pond-goldfish-interaction/" target="_blank" rel="noopener noreferrer" className="card-link">
-                                <div className="card">
-                                    <div className="card-overlay"></div>
-                                    <span className="card-label">金鱼池塘 →</span>
-                                    <div className="card-hover-title">金鱼池塘</div>
-                                    <div className="card-tools">{['Claude Design','ChatGPT'].map(t => <span key={t}>{t}</span>)}</div>
-                                    <video autoPlay loop muted playsInline style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block'}}>
-                                        <source src="Images/goldfish.webm" type="video/webm" />
-                                        <source src="Images/goldfish.mp4" type="video/mp4" />
-                                    </video>
-                                </div>
-                            </a>
+                          {/* Goldfish Pond */}
+<div className="card-link" style={{ cursor: 'default' }}>
+    <div className="card">
+        <div className="card-overlay"></div>
+        {/* Removed the arrow and added Work in Progress */}
+        <span className="card-label">Origami Fish (Work in Progress)</span>
+        
+        <div className="card-hover-title">Coming Soon</div>
+        
+        <div className="card-tools">
+            {['Claude Design','ChatGPT'].map(t => <span key={t}>{t}</span>)}
+        </div>
+        
+        {/* Added a slight opacity to the video to visually signal it is disabled */}
+        <video autoPlay loop muted playsInline style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block', opacity: 0.6}}>
+            <source src="Images/goldfish.webm" type="video/webm" />
+            <source src="Images/goldfish.mp4" type="video/mp4" />
+        </video>
+    </div>
+</div>
 
                         </div>
                     </div>
